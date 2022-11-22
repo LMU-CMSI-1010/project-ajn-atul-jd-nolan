@@ -21,8 +21,9 @@ sky.fill("SKYBLUE")
 land = pygame.Surface((s_width, s_height))          # Normal surface.
 land.fill(SAND)
 
-test_image = pygame.image.load('gamegraphics/sans.png')
-test_image_x = 600
+sans = pygame.image.load('gamegraphics/sans.png').convert_alpha()
+sans_x = 600
+sans_rect = sans.get_rect(topleft = (80,200))
 
 while True:
     for event in pygame.event.get():          # Checks for all possible events.
@@ -32,11 +33,13 @@ while True:
 
     screen.blit(sky, (0,0))
     screen.blit(land, (0,600))           # Block Image Transfer.
-    test_image_x -= 10    
-    if test_image_x < -300: test_image_x = 2000                
-    screen.blit(test_image, (test_image_x,210))
+    # sans_x -= 10    
+    # if sans_x < -300: sans_x = 2000                
+    # screen.blit(sans, (sans_x, 210))
+    sans_rect.left -= 10
+    if sans_rect.left < -300: sans_rect.left = 2000
+    screen.blit(sans, sans_rect)
 
     pygame.display.update()
     clock.tick(60)                            # FPS Ceiling - Cannot run faster than 60 FPS.
-
-# DISPLAYSURF.fill(WHITE)
+ 
