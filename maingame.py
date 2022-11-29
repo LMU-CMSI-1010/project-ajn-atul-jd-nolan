@@ -50,8 +50,6 @@ while True:
             # if event.key == pygame.K_SPACE:
             #     Blah blah blah generate bullet or something
         # if event.type == pygame.KEYUP:
-        #     if event.key == pygame.K_d:
-        #         player_left_inertia = 0
 
 
     screen.blit(sky, (0,0))
@@ -73,8 +71,7 @@ while True:
         player_right_inertia = 0
     player_rect.left -= player_right_inertia    
     
-
-    # player_rect.left += 10
+    # Score by exiting the screen on the right side
     if player_rect.left > 1500: 
         player_rect.left = -150
         player_score += 1
@@ -95,9 +92,12 @@ while True:
     screen.blit(enemy,enemy_rect)
 
     if enemy_rect.colliderect(player_rect):
-        print("GAME OVER! FINAL SCORE:", player_score)
-        pygame.quit()
-        exit()
+        if player_right_inertia != 0 or player_left_inertia != 0:
+            pass
+        else:
+            print("GAME OVER! FINAL SCORE:", player_score)
+            pygame.quit()
+            exit()
 
     pygame.display.update()
     clock.tick(60)                            # FPS Ceiling - Cannot run faster than 60 FPS.
@@ -105,6 +105,7 @@ while True:
 
     '''
     THINGS TO IMPLEMENT:
+    - PLAYER CLASS
     - ENEMY CLASS
     - ENEMY BULLETS
     - PLAYER BULLETS
