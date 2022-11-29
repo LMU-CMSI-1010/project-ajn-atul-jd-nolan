@@ -21,25 +21,69 @@ sky.fill("SKYBLUE")
 land = pygame.Surface((s_width, s_height))          # Normal surface.
 land.fill(SAND)
 
-sans = pygame.image.load('gamegraphics/sans.png').convert_alpha()
-sans_x = 600
-sans_rect = sans.get_rect(topleft = (80,200))
+player = pygame.image.load('gamegraphics/literalbeans.png').convert_alpha()
+player_rect = player.get_rect(topleft = (80,200))
+player_gravity = 0
+
+enemy = pygame.image.load('gamegraphics/lilsprite.png').convert_alpha()
+enemy_rect = enemy.get_rect(bottomright = (2000,770))
+enemy_gravity = 0
+enemy_dodge_timer = 0
 
 while True:
     for event in pygame.event.get():          # Checks for all possible events.
         if event.type == pygame.QUIT:          # If the window is exited, the game quits.
             pygame.quit()
             exit()
+        if event.type == pygame.KEYDOWN:       # Detects key being pressed down and then up, respectively.
+            if event.key == pygame.K_w:            # Specific key event.
+                if player_rect.bottom == 600:
+                    player_gravity = -27
+                else:
+                    pass
+        # if event.type == pygame.KEYUP:
+        #     print("KEYUP")
 
     screen.blit(sky, (0,0))
     screen.blit(land, (0,600))           # Block Image Transfer.
-    # sans_x -= 10    
-    # if sans_x < -300: sans_x = 2000                
-    # screen.blit(sans, (sans_x, 210))
-    sans_rect.left -= 10
-    if sans_rect.left < -300: sans_rect.left = 2000
-    screen.blit(sans, sans_rect)
+
+    # Our lovely player.
+    player_gravity += 1
+    player_rect.y += player_gravity             # Natural-ish gravity mechanic.
+    player_rect.left += 10
+    if player_rect.left > 2000: player_rect.left = -300
+    if player_rect.bottom > 600: player_rect.bottom = 600
+    screen.blit(player, player_rect)
+
+    # Our deplorable enemy.
+    # enemy_gravity += 1
+    # enemy_rect.y += enemy_gravity
+    enemy_rect.left -= 5
+    if enemy_rect.left < -450: enemy_rect.left = 2000
+    if enemy_rect.bottom > 800: enemy_rect.bottom = 800
+    # enemy_dodge_timer += 1
+    # if enemy_dodge_timer == 120:
+    #     enemy_gravity = -20
+    #     enemy_dodge_timer = 0
+    screen.blit(enemy,enemy_rect)
+
+    if enemy_rect.colliderect(player_rect):
+        print("COLLISION")
+        # pygame.quit()
+        # exit()
 
     pygame.display.update()
     clock.tick(60)                            # FPS Ceiling - Cannot run faster than 60 FPS.
- 
+
+
+    '''
+    OBJECTS TO IMPLEMENT:
+    - ENEMY CLASS
+    - ENEMY BULLETS
+    - PLAYER CHARACTER
+    - PLAYER BULLETS
+
+    
+    
+    
+    '''
