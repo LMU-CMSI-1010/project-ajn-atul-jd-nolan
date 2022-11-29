@@ -24,6 +24,8 @@ land.fill(SAND)
 player = pygame.image.load('gamegraphics/literalbeans.png')
 player_rect = player.get_rect(midbottom = (80,625))
 player_gravity = 0
+player_right_inertia = 0
+player_left_inertia = 0
 player_score = 0
 
 enemy = pygame.image.load('gamegraphics/lilsprite.png')
@@ -36,18 +38,21 @@ while True:
         if event.type == pygame.QUIT:          # If the window is exited, the game quits.
             pygame.quit()
             exit()
+
         if event.type == pygame.KEYDOWN:       # Detects key being pressed down and then up, respectively.
             if event.key == pygame.K_w:            # Specific key event.
                 if player_rect.bottom == 600:
                     player_gravity = -27
-            # if event.key == pygame.K_d:
-            #     player_rect.left += 10
-            # if event.key == pygame.K_a:
-            #     player_rect.left -= 10            
+            if event.key == pygame.K_d:
+                player_left_inertia = 40          
+            if event.key == pygame.K_a:
+                player_right_inertia = 40            
             # if event.key == pygame.K_SPACE:
             #     Blah blah blah generate bullet or something
         # if event.type == pygame.KEYUP:
-        #     print("KEYUP")
+        #     if event.key == pygame.K_d:
+        #         player_left_inertia = 0
+
 
     screen.blit(sky, (0,0))
     screen.blit(land, (0,600))           # Block Image Transfer.
@@ -55,7 +60,21 @@ while True:
     # Our lovely player.
     player_gravity += 1
     player_rect.y += player_gravity             # Natural-ish gravity mechanic.
-    player_rect.left += 10
+
+    # Right Dash
+    player_left_inertia -= 1
+    if player_left_inertia < 0:
+        player_left_inertia = 0
+    player_rect.right += player_left_inertia
+
+    # Left Dash
+    player_right_inertia -= 1
+    if player_right_inertia < 0:
+        player_right_inertia = 0
+    player_rect.left -= player_right_inertia    
+    
+
+    # player_rect.left += 10
     if player_rect.left > 1500: 
         player_rect.left = -150
         player_score += 1
@@ -63,6 +82,7 @@ while True:
     screen.blit(player, player_rect)
 
     # Our deplorable enemy.
+
     # enemy_gravity += 1
     # enemy_rect.y += enemy_gravity
     enemy_rect.left -= 5
@@ -84,13 +104,17 @@ while True:
 
 
     '''
-    OBJECTS TO IMPLEMENT:
+    THINGS TO IMPLEMENT:
     - ENEMY CLASS
     - ENEMY BULLETS
-    - PLAYER CHARACTER
     - PLAYER BULLETS
 
-    SHIFT TO DIFFERENT GAME STATE AFTER SCORE REACHES A CERTAIN LEVEL, CHANGE SKY COLOR, ETC ETC!
+    - IMPLEMENT BACKGROUND
+    - FRAME SHIFT WITH PLAYER MOVEMENT - MAKE A DECISION
+
+    - SCORE
+    
+    - SHIFT TO DIFFERENT GAME STATE AFTER SCORE REACHES A CERTAIN LEVEL, CHANGE SKY COLOR, ETC ETC!
     
     
     '''
