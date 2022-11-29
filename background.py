@@ -13,8 +13,8 @@ pygame.display.set_caption("Platformer")
 tile_size = 50
 
 # load images
-sun_img = pygame.image.load('Dowloads/n1591757.png')
-bg_img = pygame.image.load('Dowloads/6Tr5kpaac.jpg')
+sun_img = pygame.image.load('img name')
+bg_img = pygame.image.load('img name')
 
 
 def draw_grid():
@@ -29,10 +29,10 @@ class World:
         self.tile_list = []
 
         # load image of dirt
-        dirt_img = pygame.image.load("")
+        dirt_img = pygame.image.load("img name")
 
         # load image of grass
-        grass_img = pygame.image.load("")
+        grass_img = pygame.image.load("img name")
 
         row_count = 0
         for row in data:
