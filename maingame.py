@@ -21,12 +21,13 @@ sky.fill("SKYBLUE")
 land = pygame.Surface((s_width, s_height))          # Normal surface.
 land.fill(SAND)
 
-player = pygame.image.load('gamegraphics/literalbeans.png').convert_alpha()
-player_rect = player.get_rect(topleft = (80,200))
+player = pygame.image.load('gamegraphics/literalbeans.png')
+player_rect = player.get_rect(midbottom = (80,625))
 player_gravity = 0
+player_score = 0
 
-enemy = pygame.image.load('gamegraphics/lilsprite.png').convert_alpha()
-enemy_rect = enemy.get_rect(bottomright = (2000,770))
+enemy = pygame.image.load('gamegraphics/lilsprite.png')
+enemy_rect = enemy.get_rect(bottomright = (1250,600))
 enemy_gravity = 0
 enemy_dodge_timer = 0
 
@@ -51,7 +52,9 @@ while True:
     player_gravity += 1
     player_rect.y += player_gravity             # Natural-ish gravity mechanic.
     player_rect.left += 10
-    if player_rect.left > 2000: player_rect.left = -300
+    if player_rect.left > 1500: 
+        player_rect.left = -150
+        player_score += 1
     if player_rect.bottom > 600: player_rect.bottom = 600
     screen.blit(player, player_rect)
 
@@ -59,7 +62,7 @@ while True:
     # enemy_gravity += 1
     # enemy_rect.y += enemy_gravity
     enemy_rect.left -= 5
-    if enemy_rect.left < -450: enemy_rect.left = 2000
+    if enemy_rect.left < -150: enemy_rect.left = 1500
     if enemy_rect.bottom > 800: enemy_rect.bottom = 800
     # enemy_dodge_timer += 1
     # if enemy_dodge_timer == 120:
@@ -68,9 +71,9 @@ while True:
     screen.blit(enemy,enemy_rect)
 
     if enemy_rect.colliderect(player_rect):
-        print("COLLISION")
-        # pygame.quit()
-        # exit()
+        print("GAME OVER! FINAL SCORE:", player_score)
+        pygame.quit()
+        exit()
 
     pygame.display.update()
     clock.tick(60)                            # FPS Ceiling - Cannot run faster than 60 FPS.
