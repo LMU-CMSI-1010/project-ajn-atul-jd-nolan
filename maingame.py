@@ -40,8 +40,12 @@ while True:
             if event.key == pygame.K_w:            # Specific key event.
                 if player_rect.bottom == 600:
                     player_gravity = -27
-                else:
-                    pass
+            # if event.key == pygame.K_d:
+            #     player_rect.left += 10
+            # if event.key == pygame.K_a:
+            #     player_rect.left -= 10            
+            # if event.key == pygame.K_SPACE:
+            #     Blah blah blah generate bullet or something
         # if event.type == pygame.KEYUP:
         #     print("KEYUP")
 
@@ -86,7 +90,7 @@ while True:
     - PLAYER CHARACTER
     - PLAYER BULLETS
 
-    
+    SHIFT TO DIFFERENT GAME STATE AFTER SCORE REACHES A CERTAIN LEVEL, CHANGE SKY COLOR, ETC ETC!
     
     
     '''
