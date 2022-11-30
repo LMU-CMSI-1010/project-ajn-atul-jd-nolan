@@ -24,6 +24,7 @@ land.fill(SAND)
 
 player = pygame.image.load('gamegraphics/literalbeans.png')
 player_rect = player.get_rect(midbottom = (80,625))
+dashcooldown = 0
 
 enemy = pygame.image.load('gamegraphics/lilsprite.png')
 enemy_rect = enemy.get_rect(bottomright = (1250,600))
@@ -31,15 +32,17 @@ enemy_gravity = 0
 enemy_dodge_timer = 0
 
 
+
 class Player(object):
 
-    def __init__(self, health, agility):
+    def __init__(self, health, agility, slowness):
         self.health = health
         self.agility = agility
         self.gravity = 0
         self.left_inertia = 0
         self.right_inertia = 0
         self.score = 0
+        self.slowness = slowness
 
     def update(self):
         screen.blit(player, player_rect)
@@ -54,7 +57,9 @@ class Player(object):
     def dashleft(self):
         self.right_inertia = dude.agility
 
-dude = Player(3, 40)
+dude = Player(3, 40, 120)
+
+
 
 while True:
 
@@ -68,9 +73,17 @@ while True:
             if event.key == pygame.K_w:            # Specific key event.
                 dude.jump()
             if event.key == pygame.K_d:
-                dude.dashright()          
+                if dashcooldown == 0:
+                    dude.dashright()       
+                    dashcooldown = dude.slowness      
+                else:
+                    pass    
             if event.key == pygame.K_a:
-                dude.dashleft()            
+                if dashcooldown == 0:
+                    dude.dashleft()       
+                    dashcooldown = dude.slowness    
+                else:
+                    pass 
             # if event.key == pygame.K_SPACE:
             #     Blah blah blah generate bullet or something
         # if event.type == pygame.KEYUP:
@@ -95,6 +108,9 @@ while True:
         dude.right_inertia = 0
     player_rect.left -= dude.right_inertia    
     
+    dashcooldown -= 1
+    if dashcooldown < 0:
+        dashcooldown = 0
 # Score by exiting the screen on the right side
     if player_rect.left > 1500: 
         player_rect.left = -150
