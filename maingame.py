@@ -21,19 +21,44 @@ sky.fill("SKYBLUE")
 land = pygame.Surface((s_width, s_height))          # Normal surface.
 land.fill(SAND)
 
+
 player = pygame.image.load('gamegraphics/literalbeans.png')
 player_rect = player.get_rect(midbottom = (80,625))
-player_gravity = 0
-player_right_inertia = 0
-player_left_inertia = 0
-player_score = 0
 
 enemy = pygame.image.load('gamegraphics/lilsprite.png')
 enemy_rect = enemy.get_rect(bottomright = (1250,600))
 enemy_gravity = 0
 enemy_dodge_timer = 0
 
+
+class Player(object):
+
+    def __init__(self, health, agility):
+        self.health = health
+        self.agility = agility
+        self.gravity = 0
+        self.left_inertia = 0
+        self.right_inertia = 0
+        self.score = 0
+
+    def update(self):
+        screen.blit(player, player_rect)
+
+    def jump(self):
+        if player_rect.bottom == 600:
+            self.gravity = -27
+
+    def dashright(self):
+        self.left_inertia = dude.agility
+
+    def dashleft(self):
+        self.right_inertia = dude.agility
+
+dude = Player(3, 40)
+
 while True:
+
+
     for event in pygame.event.get():          # Checks for all possible events.
         if event.type == pygame.QUIT:          # If the window is exited, the game quits.
             pygame.quit()
@@ -41,12 +66,11 @@ while True:
 
         if event.type == pygame.KEYDOWN:       # Detects key being pressed down and then up, respectively.
             if event.key == pygame.K_w:            # Specific key event.
-                if player_rect.bottom == 600:
-                    player_gravity = -27
+                dude.jump()
             if event.key == pygame.K_d:
-                player_left_inertia = 40          
+                dude.dashright()          
             if event.key == pygame.K_a:
-                player_right_inertia = 40            
+                dude.dashleft()            
             # if event.key == pygame.K_SPACE:
             #     Blah blah blah generate bullet or something
         # if event.type == pygame.KEYUP:
@@ -56,28 +80,30 @@ while True:
     screen.blit(land, (0,600))           # Block Image Transfer.
 
     # Our lovely player.
-    player_gravity += 1
-    player_rect.y += player_gravity             # Natural-ish gravity mechanic.
+    dude.gravity += 1
+    player_rect.y += dude.gravity             # Natural-ish gravity mechanic.
 
     # Right Dash
-    player_left_inertia -= 1
-    if player_left_inertia < 0:
-        player_left_inertia = 0
-    player_rect.right += player_left_inertia
+    dude.left_inertia -= 1
+    if dude.left_inertia < 0:
+        dude.left_inertia = 0
+    player_rect.right += dude.left_inertia
 
     # Left Dash
-    player_right_inertia -= 1
-    if player_right_inertia < 0:
-        player_right_inertia = 0
-    player_rect.left -= player_right_inertia    
+    dude.right_inertia -= 1
+    if dude.right_inertia < 0:
+        dude.right_inertia = 0
+    player_rect.left -= dude.right_inertia    
     
-    # Score by exiting the screen on the right side
+# Score by exiting the screen on the right side
     if player_rect.left > 1500: 
         player_rect.left = -150
-        player_score += 1
+        dude.score += 1
+    if player_rect.left < -150:
+        player_rect.left = 1500
     if player_rect.bottom > 600: player_rect.bottom = 600
-    screen.blit(player, player_rect)
 
+    dude.update()
     # Our deplorable enemy.
 
     # enemy_gravity += 1
@@ -92,12 +118,15 @@ while True:
     screen.blit(enemy,enemy_rect)
 
     if enemy_rect.colliderect(player_rect):
-        if player_right_inertia != 0 or player_left_inertia != 0:
+        if dude.right_inertia != 0 or dude.left_inertia != 0:
             pass
         else:
-            print("GAME OVER! FINAL SCORE:", player_score)
-            pygame.quit()
-            exit()
+            dude.health -= 1
+
+            if dude.health == 0:
+                print("GAME OVER! FINAL SCORE:", dude.score)
+                pygame.quit()
+                exit()
 
     pygame.display.update()
     clock.tick(60)                            # FPS Ceiling - Cannot run faster than 60 FPS.
