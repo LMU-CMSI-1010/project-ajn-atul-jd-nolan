@@ -35,7 +35,8 @@ class Buttons:
         # get button to click
         pos = pygame.mouse.get_pos()
         # if mouse over button
-        if self.rect.colliderect(pos):
+        #if self.rect.colliderect(pos):
+        if pos == self.rect:
             # while clicked and when no longer clicked
             if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
                 action = True
