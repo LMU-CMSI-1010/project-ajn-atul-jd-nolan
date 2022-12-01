@@ -65,8 +65,17 @@ class Enemy(object):
 
     def __init__(self, slowness):
         self.slowness = slowness
+        self.gravity = 0
 
-dude = Player(3, 40, 60)
+    def update(self):
+        screen.blit(enemy, enemy_rect)
+
+    def jump(self):
+        if enemy_rect.bottom == 600:
+            self.gravity = -10
+
+dude = Player(40, 60)
+villain = Enemy(120)
 
 
 
@@ -93,8 +102,6 @@ while True:
                     dashcooldown = dude.slowness    
                 else:
                     pass 
-            # if event.key == pygame.K_SPACE:
-            #     Blah blah blah generate bullet or something
         # if event.type == pygame.KEYUP:
 
 
@@ -136,16 +143,16 @@ while True:
 
     # Our deplorable enemy.
 
-    # enemy_gravity += 1
-    # enemy_rect.y += enemy_gravity
+    enemy_gravity += 1
+    enemy_rect.y += enemy_gravity
     enemy_rect.left -= 5
     if enemy_rect.left < -150: enemy_rect.left = 1500
     if enemy_rect.bottom > 800: enemy_rect.bottom = 800
-    # enemy_dodge_timer += 1
-    # if enemy_dodge_timer == 120:
-    #     enemy_gravity = -20
-    #     enemy_dodge_timer = 0
-    screen.blit(enemy,enemy_rect)
+    enemy_dodge_timer += 1
+    if enemy_dodge_timer == 120:
+        enemy_gravity = -20
+        enemy_dodge_timer = 0
+    villain.update()
 
     if enemy_rect.colliderect(player_rect):
         if dude.right_inertia != 0 or dude.left_inertia != 0:
