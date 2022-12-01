@@ -22,7 +22,6 @@ bg_img = pygame.image.load('gamegraphics')
 start_img = pygame.image.load('gamegraphics')
 exit_img = pygame.image.load('gamegraphics')
 
-
 class Buttons:
     def __init__(self, x, y, image):
         self.image = image
@@ -37,6 +36,7 @@ class Buttons:
         pos = pygame.mouse.get_pos()
         # if mouse over button
         if self.rect.collidrect(pos):
+            # while clicked and when no longer clicked
             if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
                 action = True
                 self.clicked = True
@@ -47,7 +47,7 @@ class Buttons:
         screen.blit(self.image, self.rect)
         return action
 
-
+# To see the grids for the tiles
 def draw_grid():
     for line in range(0, 20):
         pygame.draw.line(screen, (255, 255, 255), (0, line * tile_size), (screen_width, line * tile_size))
@@ -64,7 +64,8 @@ class World:
 
         # load image of grass
         grass_img = pygame.image.load("gamegraphics")
-
+        
+        # add the different tiles based on their corresponding number in world
         row_count = 0
         for row in data:
             col_count = 0
@@ -90,7 +91,7 @@ class World:
         for tile in self.tile_list:
             screen.blit(tile[0], tile[1])
 
-
+# the world
 world_data = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -126,6 +127,7 @@ while run:
     screen.blit(bg_img, (0, 0))
     screen.blit(sun_img, (100, 100))
 
+    # main menu screen for start/exit
     if main_menu == True:
         if exit_button.draw():
             run = False
