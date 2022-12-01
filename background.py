@@ -15,8 +15,8 @@ tile_size = 50
 main_menu = True
 
 # load images
-sun_img = pygame.image.load('gamegraphics')
-bg_img = pygame.image.load('gamegraphics')
+sun_img = pygame.image.load('gamegraphics/moon.png')
+bg_img = pygame.image.load('gamegraphics/sky.png')
 
 # start and end image
 start_img = pygame.image.load('gamegraphics/start button.png')
@@ -60,10 +60,10 @@ class World:
         self.tile_list = []
 
         # load image of dirt
-        dirt_img = pygame.image.load("gamegraphics")
+        dirt_img = pygame.image.load("gamegraphics/dirt.png")
 
         # load image of grass
-        grass_img = pygame.image.load("gamegraphics")
+        grass_img = pygame.image.load("gamegraphics/grass.png")
         
         # add the different tiles based on their corresponding number in world
         row_count = 0
