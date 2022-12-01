@@ -39,8 +39,7 @@ dash_rect = dash_icon.get_rect(topleft = (50,50))
 
 class Player(object):
 
-    def __init__(self, health, agility, slowness):
-        self.health = health
+    def __init__(self, agility, slowness):
         self.agility = agility
         self.gravity = 0
         self.left_inertia = 0
@@ -60,6 +59,12 @@ class Player(object):
 
     def dashleft(self):
         self.right_inertia = dude.agility
+
+
+class Enemy(object):
+
+    def __init__(self, slowness):
+        self.slowness = slowness
 
 dude = Player(3, 40, 60)
 
@@ -146,12 +151,9 @@ while True:
         if dude.right_inertia != 0 or dude.left_inertia != 0:
             pass
         else:
-            dude.health -= 1
-
-            if dude.health == 0:
-                print("GAME OVER! FINAL SCORE:", dude.score)
-                pygame.quit()
-                exit()
+            print("GAME OVER! FINAL SCORE:", dude.score)
+            pygame.quit()
+            exit()
 
     pygame.display.update()
     clock.tick(60)                            # FPS Ceiling - Cannot run faster than 60 FPS.
