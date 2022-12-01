@@ -2,7 +2,7 @@ import pygame
 from sys import exit
 
 pygame.init()                                 # Initialize pygame.
-SCRWIDTH = 2000
+SCRWIDTH = 1500
 SCRHEIGHT = 800
 screen = pygame.display.set_mode((SCRWIDTH, SCRHEIGHT))  # Set bounds of window/display surface.
 pygame.display.set_caption('Bean Game') 
@@ -12,10 +12,10 @@ clock = pygame.time.Clock()
 SAND = (156, 117, 82)
 
 # Objects
-s_width = 2000
+s_width = 1500
 s_height = 200
 
-sky = pygame.Surface((2000, 800)) 
+sky = pygame.Surface((s_width, 800)) 
 sky.fill("SKYBLUE") 
 
 land = pygame.Surface((s_width, s_height))          # Normal surface.
@@ -30,6 +30,10 @@ enemy = pygame.image.load('gamegraphics/lilsprite.png')
 enemy_rect = enemy.get_rect(bottomright = (1250,600))
 enemy_gravity = 0
 enemy_dodge_timer = 0
+
+dash_ability = pygame.image.load('gamegraphics/dashsymbol.png')
+dash_icon = pygame.transform.scale(dash_ability, (200, 200))
+dash_rect = dash_icon.get_rect(topleft = (50,50))
 
 
 
@@ -57,7 +61,7 @@ class Player(object):
     def dashleft(self):
         self.right_inertia = dude.agility
 
-dude = Player(3, 40, 120)
+dude = Player(3, 40, 60)
 
 
 
@@ -111,15 +115,20 @@ while True:
     dashcooldown -= 1
     if dashcooldown < 0:
         dashcooldown = 0
-# Score by exiting the screen on the right side
+
+    # Score by exiting the screen on the right side
     if player_rect.left > 1500: 
         player_rect.left = -150
         dude.score += 1
     if player_rect.left < -150:
         player_rect.left = 1500
     if player_rect.bottom > 600: player_rect.bottom = 600
-
     dude.update()
+
+    if dashcooldown == 0:
+        screen.blit(dash_icon,dash_rect).inflate(0.5,0.5)
+
+
     # Our deplorable enemy.
 
     # enemy_gravity += 1
@@ -160,7 +169,7 @@ while True:
     - FRAME SHIFT WITH PLAYER MOVEMENT - MAKE A DECISION
 
     - SCORE
-    
+
     - SHIFT TO DIFFERENT GAME STATE AFTER SCORE REACHES A CERTAIN LEVEL, CHANGE SKY COLOR, ETC ETC!
     
     
