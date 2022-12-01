@@ -19,8 +19,8 @@ sun_img = pygame.image.load('gamegraphics')
 bg_img = pygame.image.load('gamegraphics')
 
 # start and end image
-start_img = pygame.image.load('gamegraphics')
-exit_img = pygame.image.load('gamegraphics')
+start_img = pygame.image.load('gamegraphics/start button.png')
+exit_img = pygame.image.load('gamegraphics/exit button.png')
 
 class Buttons:
     def __init__(self, x, y, image):
