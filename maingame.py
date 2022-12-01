@@ -33,7 +33,7 @@ enemy_dodge_timer = 0
 
 dash_ability = pygame.image.load('gamegraphics/dashsymbol.png')
 dash_icon = pygame.transform.scale(dash_ability, (200, 200))
-dash_rect = dash_icon.get_rect(topleft = (50,50))
+dash_rect = dash_icon.get_rect(topleft = (50,600))
 
 
 
@@ -71,8 +71,7 @@ class Enemy(object):
         screen.blit(enemy, enemy_rect)
 
     def jump(self):
-        if enemy_rect.bottom == 600:
-            self.gravity = -10
+        self.gravity = -10
 
 dude = Player(40, 60)
 villain = Enemy(120)
@@ -146,11 +145,15 @@ while True:
     enemy_gravity += 1
     enemy_rect.y += enemy_gravity
     enemy_rect.left -= 5
-    if enemy_rect.left < -150: enemy_rect.left = 1500
-    if enemy_rect.bottom > 800: enemy_rect.bottom = 800
+
+    if enemy_rect.left < -150: 
+        enemy_rect.left = 1500
+    if enemy_rect.bottom > 600: 
+        enemy_rect.bottom = 600
     enemy_dodge_timer += 1
     if enemy_dodge_timer == 120:
         enemy_gravity = -20
+        villain.jump()
         enemy_dodge_timer = 0
     villain.update()
 
