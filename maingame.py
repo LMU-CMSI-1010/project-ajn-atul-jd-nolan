@@ -15,19 +15,23 @@ SAND = (156, 117, 82)
 s_width = 1500
 s_height = 200
 
-sky = pygame.Surface((s_width, 800)) 
-sky.fill("SKYBLUE") 
+bluesky = pygame.Surface((s_width, 800)) 
+bluesky.fill("SKYBLUE") 
+
+redsky = pygame.Surface((s_width, 800))
+redsky.fill("RED")
 
 land = pygame.Surface((s_width, s_height))          # Normal surface.
 land.fill(SAND)
 
 
 player = pygame.image.load('gamegraphics/literalbeans.png')
+playerscaled = pygame.transform.scale(player, (400,500))
 player_rect = player.get_rect(midbottom = (80,625))
 dashcooldown = 0
 
 enemy = pygame.image.load('gamegraphics/lilsprite.png')
-enemy_rect = enemy.get_rect(bottomright = (1250,600))
+enemy_rect = enemy.get_rect(midbottom = (1250,600))
 enemy_gravity = 0
 enemy_dodge_timer = 0
 
@@ -63,9 +67,10 @@ class Player(object):
 
 class Enemy(object):
 
-    def __init__(self, slowness):
+    def __init__(self, slowness, init_speed):
         self.slowness = slowness
         self.gravity = 0
+        self.speed = init_speed
 
     def update(self):
         screen.blit(enemy, enemy_rect)
@@ -74,12 +79,9 @@ class Enemy(object):
         self.gravity = -10
 
 dude = Player(40, 60)
-villain = Enemy(120)
-
-
+villain = Enemy(120, 5)
 
 while True:
-
 
     for event in pygame.event.get():          # Checks for all possible events.
         if event.type == pygame.QUIT:          # If the window is exited, the game quits.
@@ -104,8 +106,17 @@ while True:
         # if event.type == pygame.KEYUP:
 
 
-    screen.blit(sky, (0,0))
+    if dude.score < 5:
+        screen.blit(bluesky, (0,0))
+
+    elif dude.score >= 5 and dude.score < 10:
+        screen.blit(redsky, (0,0))
+        villain.speed += 1.5
+
     screen.blit(land, (0,600))           # Block Image Transfer.
+
+    # pygame.draw.rect(screen, (255,0,0), player_rect) (ACCESS HITBOXES)
+    # pygame.draw.rect(screen, (255,0,0), enemy_rect)
 
     # Our lovely player.
     dude.gravity += 1
@@ -144,7 +155,7 @@ while True:
 
     enemy_gravity += 1
     enemy_rect.y += enemy_gravity
-    enemy_rect.left -= 5
+    enemy_rect.left -= villain.speed
 
     if enemy_rect.left < -150: 
         enemy_rect.left = 1500
