@@ -30,8 +30,9 @@ playerscaled = pygame.transform.scale(player, (400,500))
 player_rect = player.get_rect(midbottom = (80,625))
 dashcooldown = 0
 
-enemy = pygame.image.load('gamegraphics/lilsprite.png')
-enemy_rect = enemy.get_rect(midbottom = (1250,600))
+enemy = pygame.image.load('gamegraphics/enemy1.png')
+enemy1scaled = pygame.transform.scale(enemy, (150,250))
+enemy_rect = enemy1scaled.get_rect(midbottom = (1250,600))
 enemy_gravity = 0
 enemy_dodge_timer = 0
 
@@ -73,7 +74,7 @@ class Enemy(object):
         self.speed = init_speed
 
     def update(self):
-        screen.blit(enemy, enemy_rect)
+        screen.blit(enemy1scaled, enemy_rect)
 
     def jump(self):
         self.gravity = -10
@@ -108,14 +109,15 @@ while True:
 
     if dude.score < 5:
         screen.blit(bluesky, (0,0))
+        enemy_rect.left -= villain.speed
 
     elif dude.score >= 5 and dude.score < 10:
         screen.blit(redsky, (0,0))
-        villain.speed += 1.5
+        enemy_rect.left -= villain.speed + 5
 
     screen.blit(land, (0,600))           # Block Image Transfer.
 
-    # pygame.draw.rect(screen, (255,0,0), player_rect) (ACCESS HITBOXES)
+    # pygame.draw.rect(screen, (255,0,0), player_rect) #(ACCESS HITBOXES)
     # pygame.draw.rect(screen, (255,0,0), enemy_rect)
 
     # Our lovely player.
@@ -155,7 +157,6 @@ while True:
 
     enemy_gravity += 1
     enemy_rect.y += enemy_gravity
-    enemy_rect.left -= villain.speed
 
     if enemy_rect.left < -150: 
         enemy_rect.left = 1500
