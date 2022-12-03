@@ -18,8 +18,8 @@ b_img = pygame.image.load('gamegraphics/sky.png')
 bg_img = pygame.transform.scale(b_img, (1000,1000))
 
 # start and end image
-start_img = pygame.image.load('gamegraphics/start button')
-exit_img = pygame.image.load('gamegraphics/exit button')
+start_img = pygame.image.load('gamegraphics/start button.png')
+exit_img = pygame.image.load('gamegraphics/exit button.png')
 
 
 class Buttons:
