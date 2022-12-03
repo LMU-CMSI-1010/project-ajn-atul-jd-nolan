@@ -145,9 +145,9 @@ while run:
         print(world.tile_list)
 """
     # a false statement to allow to quit the run
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            run = False
+for event in pygame.event.get():
+    if event.type == pygame.QUIT:
+        run = False
 
     pygame.display.update()
 
