@@ -131,7 +131,7 @@ while run:
     # put images on the game screen
     screen.blit(bg_img, (0, 0))
     screen.blit(sun_img, (100, 100))
-"""
+
     if main_menu:
         # if exit_button.draw():
         if event.type == pygame.KEYDOWN and event.key == pygame.K_q:
@@ -143,8 +143,8 @@ while run:
         world.draw()
         draw_grid()
         print(world.tile_list)
-"""
-    # a false statement to allow to quit the run
+
+        # a false statement to allow to quit the run
 for event in pygame.event.get():
     if event.type == pygame.QUIT:
         run = False
