@@ -1,7 +1,4 @@
-# from tkinter import Button
-
 import pygame
-from pygame.locals import *
 
 pygame.init()
 
@@ -15,8 +12,10 @@ tile_size = 50
 main_menu = True
 
 # load images
-sun_img = pygame.image.load('gamegraphics/sun')
-bg_img = pygame.image.load('gamegraphics/background')
+sn_img = pygame.image.load('gamegraphics/sun')
+sun_img = pygame.transform.scale(sn_img, (50,50))
+b_img = pygame.image.load('gamegraphics/background')
+bg_img = pygame.transform.scale(b_img, (1000,1000))
 
 # start and end image
 start_img = pygame.image.load('gamegraphics/start button')
@@ -65,10 +64,12 @@ class World:
         self.tile_list = []
 
         # load image of dirt
-        dirt_img = pygame.image.load("gamegraphics")
+        dit_img = pygame.image.load("gamegraphics/dirt")
+        dirt_img = pygame.transform.scale(dit_img, (50,50))
 
         # load image of grass
-        grass_img = pygame.image.load("gamegraphics")
+        gras_img = pygame.image.load("gamegraphics/grass")
+        grass_img = pygame.transform.scale(gras_img, (50, 50))
 
         row_count = 0
         for row in data:
@@ -131,7 +132,7 @@ while run:
     screen.blit(bg_img, (0, 0))
     screen.blit(sun_img, (100, 100))
 
-    if main_menu == True:
+    if main_menu:
         # if exit_button.draw():
         if event.type == pygame.KEYDOWN and event.key == pygame.K_q:
             run = False
