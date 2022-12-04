@@ -95,7 +95,10 @@ while gamestate == "startscreen":
 
         x,y = pygame.mouse.get_pos()
         if event.type == pygame.MOUSEBUTTONDOWN and 0<x<1500 and 0<y<800:
-            gamestate == "play"
+            gamestate = "play"
+
+    pygame.display.update()
+    clock.tick(60)    
 
 
 
