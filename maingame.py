@@ -79,10 +79,27 @@ class Enemy(object):
     def jump(self):
         self.gravity = -10
 
+gamestate = "startscreen"
+
 dude = Player(40, 60)
 villain = Enemy(120, 5)
 
-while True:
+while gamestate == "startscreen":
+    screen.blit(bluesky, (0,0))
+    screen.blit(land, (0,600))
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:          # If the window is exited, the game quits.
+            pygame.quit()
+            exit()
+
+        x,y = pygame.mouse.get_pos()
+        if event.type == pygame.MOUSEBUTTONDOWN and 0<x<1500 and 0<y<800:
+            gamestate == "play"
+
+
+
+while gamestate == "play":
 
     for event in pygame.event.get():          # Checks for all possible events.
         if event.type == pygame.QUIT:          # If the window is exited, the game quits.
@@ -170,9 +187,9 @@ while True:
     villain.update()
 
     if enemy_rect.colliderect(player_rect):
-        if dude.right_inertia != 0 or dude.left_inertia != 0:
-            pass
-        else:
+        # if dude.right_inertia != 0 or dude.left_inertia != 0:
+        #     pass
+        # else:
             print("GAME OVER! FINAL SCORE:", dude.score)
             pygame.quit()
             exit()
