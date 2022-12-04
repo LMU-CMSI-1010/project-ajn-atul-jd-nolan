@@ -12,9 +12,9 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 tile_size = 50
 
 #load images
-sn_img = pygame.image.load('gamegraphics/sun')
+sn_img = pygame.image.load('gamegraphics/moon.png')
 sun_img = pygame.transform.scale(sn_img, (50, 50))
-b_img = pygame.image.load('gamegraphics/background')
+b_img = pygame.image.load('gamegraphics/sky.png')
 bg_img = pygame.transform.scale(b_img, (1000, 1000))
 
 def draw_grid():
