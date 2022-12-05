@@ -256,9 +256,6 @@ while gamestate == "play":
     if player_rect.bottom > FLOOR: player_rect.bottom = FLOOR
     dude.update()
 
-    if dashcooldown == 0:
-        screen.blit(dash_icon,dash_rect)
-
 
     # Our deplorable enemy.
 
@@ -276,7 +273,9 @@ while gamestate == "play":
     villain.update()
 
     screen.blit(toolbar, (1000,0))
-    
+    if dashcooldown == 0:
+        screen.blit(dash_icon,dash_rect)
+
     if enemy_rect.colliderect(player_rect):
         if dude.right_inertia != 0 or dude.left_inertia != 0:
             pass
