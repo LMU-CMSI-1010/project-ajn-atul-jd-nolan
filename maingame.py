@@ -192,7 +192,6 @@ while gamestate == "play":
 
     screen.blit(bg_img, (0, 0))
     screen.blit(sun_img, (100, 100))
-    screen.blit(toolbar, (1000,0))
     world.draw()
     draw_grid()
 
@@ -276,6 +275,8 @@ while gamestate == "play":
         enemy_dodge_timer = 0
     villain.update()
 
+    screen.blit(toolbar, (1000,0))
+    
     if enemy_rect.colliderect(player_rect):
         if dude.right_inertia != 0 or dude.left_inertia != 0:
             pass
