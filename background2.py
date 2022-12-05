@@ -60,8 +60,8 @@ class World():
         self.tile_list = []
 
         # load images
-        dirt_img = pygame.image.load('img/dirt.png')
-        grass_img = pygame.image.load('img/grass.png')
+        dirt_img = pygame.image.load('gamegraphics/dirt.png')
+        grass_img = pygame.image.load('gamegraphics/grass.png')
 
         row_count = 0
         for row in data:
