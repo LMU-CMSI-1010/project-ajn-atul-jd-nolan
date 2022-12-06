@@ -35,7 +35,7 @@ class Button():
 
     def draw(self):
         action = False
-
+        """
         # get mouse position
         pos = pygame.mouse.get_pos()
 
@@ -50,7 +50,7 @@ class Button():
 
         # draw button
         screen.blit(self.image, self.rect)
-
+        """
         return action
 
 
@@ -81,6 +81,9 @@ class World():
                     img_rect.y = row_count * tile_size
                     tile = (img, img_rect)
                     self.tile_list.append(tile)
+                if tile == 3:
+                    zombie = ZombieGhost(col_count * tile_size, row_count * tile_size + (tile_size // 2))
+                    zombie_group.add(zombie)
 
                 col_count += 1
             row_count += 1
@@ -90,7 +93,34 @@ class World():
             screen.blit(tile[0], tile[1])
             pygame.draw.rect(screen, (255, 255, 255), tile[1], 2)
 
+            
+    class Enemy(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load('img/blob.png')
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+        self.move_direction = 1
+        self.move_counter = 0
 
+    def update(self):
+        self.rect.x += self.move_direction
+        self.move_counter += 1
+        if abs(self.move_counter) > 50:
+            self.move_direction *= -1
+            self.move_counter *= -1
+
+
+class ZombieGhost(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        img = pygame.image.load('gamegraphics/enemy1.png')
+        self.image = pygame.transform.scale(img, (tile_size, tile_size // 2))
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+    
 
 world_data = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -115,6 +145,7 @@ world_data = [
     [1, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ]
 
+lava_group = pygame.sprite.Group()
 
 world = World(world_data)
 
@@ -129,7 +160,7 @@ while run:
 
     screen.blit(bg_img, (0, 0))
     screen.blit(sun_img, (100, 100))
-
+    """
     if main_menu == True:
         if exit_button.draw():
             run = False
@@ -137,7 +168,7 @@ while run:
             main_menu = False
     else:
         world.draw()
-
+    """
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
