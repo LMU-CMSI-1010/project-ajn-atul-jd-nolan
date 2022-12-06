@@ -94,7 +94,7 @@ class World():
             pygame.draw.rect(screen, (255, 255, 255), tile[1], 2)
 
             
-    class Enemy(pygame.sprite.Sprite):
+class Enemy(pygame.sprite.Sprite):
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
         img = pygame.image.load('gamegraphics/enemy1.png')
@@ -160,7 +160,7 @@ while run:
     else:
         world.draw()
     """
-     zombie_group.draw(screen)
+    zombie_group.draw(screen)
         
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
