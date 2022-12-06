@@ -26,7 +26,6 @@ font = pygame.font.SysFont("Consolas", 40, True, False)
 land = pygame.Surface((SCRWIDTH, SCRHEIGHT))          # Normal surface.
 land.fill(SAND)
 
-
 player = pygame.image.load('gamegraphics/hero.png')
 playerscaled = pygame.transform.scale(player, (100,150))
 # player_rect = playerscaled.get_rect(midbottom = (80,950))
@@ -41,7 +40,6 @@ enemy_dodge_timer = 0
 dash_ability = pygame.image.load('gamegraphics/dashsymbol.png')
 dash_icon = pygame.transform.scale(dash_ability, (100, 100))
 dash_rect = dash_icon.get_rect(topleft = (1050,50))
-
 
 
 class Player(object):
@@ -85,21 +83,21 @@ class Player(object):
             dude.rect.bottom = FLOOR
         screen.blit(self.image, self.rect)
         
-        # code atul is adding to check for collision
-        for tile in world.tile_list:
-                #check for collision in x direction
-                if tile[1].colliderect(self.rect.x + dx, self.rect.y, self.width, self.height):
-                    dx = 0
-                #check for collision in y direction
-                if tile[1].colliderect(self.rect.x, self.rect.y + dy, self.width, self.height):
-                    #check if below the ground i.e. jumping
-                    if self.vel_y < 0:
-                        dy = tile[1].bottom - self.rect.top
-                        self.vel_y = 0
-                    #check if above the ground i.e. falling
-                    elif self.vel_y >= 0:
-                        dy = tile[1].top - self.rect.bottom
-                        self.vel_y = 0
+        # # code atul is adding to check for collision
+        # for tile in world.tile_list:
+        #         #check for collision in x direction
+        #         if tile[1].colliderect(self.rect.x + dx, self.rect.y, self.width, self.height):
+        #             dx = 0
+        #         #check for collision in y direction
+        #         if tile[1].colliderect(self.rect.x, self.rect.y + dy, self.width, self.height):
+        #             #check if below the ground i.e. jumping
+        #             if self.vel_y < 0:
+        #                 dy = tile[1].bottom - self.rect.top
+        #                 self.vel_y = 0
+        #             #check if above the ground i.e. falling
+        #             elif self.vel_y >= 0:
+        #                 dy = tile[1].top - self.rect.bottom
+        #                 self.vel_y = 0
 
     def jump(self):
         if self.rect.bottom == 950:
