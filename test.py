@@ -10,6 +10,8 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 
 #define game variables
 tile_size = 50
+game_over = 0
+main_menu = True
 
 #load images
 b_img = pygame.image.load('gamegraphics/sky.png')
