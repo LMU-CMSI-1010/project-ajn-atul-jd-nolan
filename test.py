@@ -16,6 +16,8 @@ b_img = pygame.image.load('gamegraphics/sky.png')
 bg_img = pygame.transform.scale(b_img, (1000, 700))
 sn_img = pygame.image.load('gamegraphics/moon.png')
 sun_img = pygame.transform.scale(sn_img, (50, 50))
+start_img = pygame.image.load('gamegraphics/start button.png')
+exit_img = pygame.image.load('gamegraphics/exit button.png')
 
 
 class Potato():
