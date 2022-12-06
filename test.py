@@ -213,8 +213,6 @@ exit_button = Button(screen_width // 2 + 150, screen_height // 2, exit_img)
 run = True
 while run:
 
-    clock.tick(fps)
-
     screen.blit(bg_img, (0, 0))
     screen.blit(sun_img, (100, 100))
     if main_menu == True:
