@@ -120,6 +120,7 @@ class Potato():
         screen.blit(self.image, self.rect)
         pygame.draw.rect(screen, (255, 255, 255), self.rect, 2)
 
+        """
 class Button():
     def __init__(self, x, y, image):
         self.image = image
@@ -142,7 +143,7 @@ class Button():
         # draw button
         screen.blit(self.image, self.rect)
         return action
-        
+        """
         
 class World():
     def __init__(self, data):
@@ -209,21 +210,26 @@ world = World(world_data)
 world = World(world_data)
 
 # create buttons
+"""
 start_button = Button(screen_width // 2 - 350, screen_height // 2, start_img)
 exit_button = Button(screen_width // 2 + 150, screen_height // 2, exit_img)
+"""
 
 run = True
 while run:
 
     screen.blit(bg_img, (0, 0))
     screen.blit(sun_img, (100, 100))
+    """
     if main_menu == True:
         if exit_button.draw():
             run = False
         if start_button.draw():
             main_menu = False
     else:
-        world.draw()
+    """
+    world.draw()
+      
         
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -232,4 +238,3 @@ while run:
     pygame.display.update()
 
 pygame.quit()
-Footer
