@@ -3,10 +3,10 @@ from sys import exit
 
 pygame.init()                                 # Initialize pygame.
 SCRWIDTH = 1200
-SCRHEIGHT = 1000
+SCRHEIGHT = 700
 L_BORDER = -50
 R_BORDER = 1000
-FLOOR = 950
+FLOOR = 650
 screen = pygame.display.set_mode((SCRWIDTH, SCRHEIGHT))  # Set bounds of window/display surface.
 pygame.display.set_caption('Frijole Fiasco!') 
 clock = pygame.time.Clock()
@@ -100,7 +100,7 @@ class Player(object):
         #                 self.vel_y = 0
 
     def jump(self):
-        if self.rect.bottom == 950:
+        if self.rect.bottom == 650:
             self.gravity = -20
 
     def dashright(self):
@@ -136,7 +136,7 @@ tile_size = 50
 sn_img = pygame.image.load('gamegraphics/moon.png')
 sun_img = pygame.transform.scale(sn_img, (50, 50))
 b_img = pygame.image.load('gamegraphics/sky.png')
-bg_img = pygame.transform.scale(b_img, (1000, 1000))
+bg_img = pygame.transform.scale(b_img, (1000, 700))
 
 def draw_grid():
     for line in range(0, 20):
@@ -192,17 +192,11 @@ world_data = [
     [0, 7, 0, 0, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 7, 0, 0, 0, 0, 0],
-    [0, 0, 2, 0, 0, 7, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 2, 0, 0, 4, 0, 0, 0, 0, 3, 0, 0, 3, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0],
+    [0, 0, 2, 0, 0, 7, 0, 7, 0, 0, 0, 3, 0, 0, 3, 0, 0, 0, 0, 0],
+    [0, 0, 0, 2, 0, 0, 4, 0, 0, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 7, 0, 0, 0, 0, 2, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 0, 2, 2, 2, 2, 2, 1],
-    [0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 1, 2, 1, 2, 1, 1, 1, 1, 1, 1],
-    [1, 0, 0, 0, 0, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 0, 0, 0, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
 ]
 
 world = World(world_data)
@@ -214,8 +208,8 @@ gamestate = "startscreen"
 
 while gamestate == "startscreen":
 
-    dude = Player(20, 60, 80, 950, playerscaled)
-    villain = Enemy1(120, 5, 800, 1000, enemy1scaled)
+    dude = Player(20, 60, 80, 650, playerscaled)
+    villain = Enemy1(120, 5, 800, 650, enemy1scaled)
 
     screen.blit(bluesky, (0,0))
     screen.blit(land, (0,600))
@@ -302,7 +296,7 @@ while gamestate == "play":
 
     # Score
     scoretext = font.render(f"SCORE:{dude.score}", True, (0,0,0))
-    screen.blit(scoretext, (1000, 800))
+    screen.blit(scoretext, (1000, 600))
 
     if enemy_rect.colliderect(dude.rect):
         if dude.right_inertia != 0 or dude.left_inertia != 0:
