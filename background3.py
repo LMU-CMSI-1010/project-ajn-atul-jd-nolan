@@ -1,5 +1,3 @@
-# from tkinter import Button
-
 import pygame
 from pygame.locals import *
 
@@ -10,63 +8,32 @@ screen_height = 1000
 
 screen = pygame.display.set_mode((screen_width, screen_height))
 
-# define game variables
+#define game variables
 tile_size = 50
-main_menu = True
 
-# load images
-sun_img = pygame.image.load('gamegraphics/moon.png')
-bg_img = pygame.image.load('gamegraphics/sky.png')
+#load images
+sn_img = pygame.image.load('gamegraphics/moon.png')
+sun_img = pygame.transform.scale(sn_img, (50, 50))
+b_img = pygame.image.load('gamegraphics/sky.png')
+bg_img = pygame.transform.scale(b_img, (1000, 1000))
 
-# start and end image
-start_img = pygame.image.load('gamegraphics/start button.png')
-exit_img = pygame.image.load('gamegraphics/exit button.png')
-
-class Buttons:
-    def __init__(self, x, y, image):
-        self.image = image
-        self.rect = self.image.get_rect()
-        self.rect.x = x
-        self.rect.y = y
-        self.clicked = False
-
-    def draw(self):
-        action = False
-        # get button to click
-        pos = pygame.mouse.get_pos()
-        # if mouse over button
-        #if self.rect.colliderect(pos):
-        if pos == self.rect:
-            # while clicked and when no longer clicked
-            if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
-                action = True
-                self.clicked = True
-            if pygame.mouse.get_pressed()[0] == 0:
-                self.clicked = False
-
-        # draw button
-        screen.blit(self.image, self.rect)
-        return action
-
-# To see the grids for the tiles
 def draw_grid():
     for line in range(0, 20):
         pygame.draw.line(screen, (255, 255, 255), (0, line * tile_size), (screen_width, line * tile_size))
         pygame.draw.line(screen, (255, 255, 255), (line * tile_size, 0), (line * tile_size, screen_height))
 
-
-class World:
+class World():
     def __init__(self, data):
-
         self.tile_list = []
 
         # load image of dirt
-        dirt_img = pygame.image.load("gamegraphics/dirt.png")
+        dit_img = pygame.image.load("gamegraphics/dirt.png")
+        dirt_img = pygame.transform.scale(dit_img, (50, 50))
 
         # load image of grass
-        grass_img = pygame.image.load("gamegraphics/grass.png")
-        
-        # add the different tiles based on their corresponding number in world
+        gras_img = pygame.image.load("gamegraphics/grass.png")
+        grass_img = pygame.transform.scale(gras_img, (50, 50))
+
         row_count = 0
         for row in data:
             col_count = 0
@@ -85,14 +52,13 @@ class World:
                     img_rect.y = row_count * tile_size
                     tile = (img, img_rect)
                     self.tile_list.append(tile)
-            col_count += 1
-        row_count += 1
+                col_count += 1
+            row_count += 1
 
     def draw(self):
         for tile in self.tile_list:
             screen.blit(tile[0], tile[1])
 
-# the world
 world_data = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -115,31 +81,20 @@ world_data = [
     [1, 0, 0, 0, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ]
+
+
 world = World(world_data)
 
-# buttons
-start_button = Buttons(screen_width // 2 - 350, screen_height // 2, start_img)
-exit_button = Buttons(screen_width // 2 + 150, screen_height // 2, exit_img)
-
-# to keep the game running
 run = True
 while run:
-    # put images on the game screen
+
     screen.blit(bg_img, (0, 0))
     screen.blit(sun_img, (100, 100))
 
-    # main menu screen for start/exit
-    if main_menu == True:
-        if exit_button.draw():
-            run = False
-        if start_button.draw():
-            main_menu = False
-    else:
-        world.draw()
-        draw_grid()
-        print(world.tile_list)
+    world.draw()
 
-    # a false statement to allow to quit the run
+    draw_grid()
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False

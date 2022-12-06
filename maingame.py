@@ -2,38 +2,46 @@ import pygame
 from sys import exit
 
 pygame.init()                                 # Initialize pygame.
-SCRWIDTH = 1500
-SCRHEIGHT = 800
+SCRWIDTH = 1200
+SCRHEIGHT = 1000
+L_BORDER = -50
+R_BORDER = 1000
+FLOOR = 950
 screen = pygame.display.set_mode((SCRWIDTH, SCRHEIGHT))  # Set bounds of window/display surface.
-pygame.display.set_caption('Bean Game') 
+pygame.display.set_caption('Frijole Fiasco!') 
 clock = pygame.time.Clock()
 
 # Colors
 SAND = (156, 117, 82)
 
 # Objects
-s_width = 1500
-s_height = 200
+bluesky = pygame.Surface((SCRWIDTH, SCRHEIGHT)) 
+bluesky.fill("SKYBLUE") 
 
-sky = pygame.Surface((s_width, 800)) 
-sky.fill("SKYBLUE") 
+toolbar = pygame.Surface((200, SCRHEIGHT))
+toolbar.fill("WHITE")
 
-land = pygame.Surface((s_width, s_height))          # Normal surface.
+# redsky = pygame.Surface((s_width, 800))
+# redsky.fill("RED")
+
+land = pygame.Surface((SCRWIDTH, SCRHEIGHT))          # Normal surface.
 land.fill(SAND)
 
 
 player = pygame.image.load('gamegraphics/literalbeans.png')
-player_rect = player.get_rect(midbottom = (80,625))
+playerscaled = pygame.transform.scale(player, (50,75))
+player_rect = playerscaled.get_rect(midbottom = (80,950))
 dashcooldown = 0
 
-enemy = pygame.image.load('gamegraphics/lilsprite.png')
-enemy_rect = enemy.get_rect(bottomright = (1250,600))
+enemy = pygame.image.load('gamegraphics/enemy1.png')
+enemy1scaled = pygame.transform.scale(enemy, (50,100))
+enemy_rect = enemy1scaled.get_rect(midbottom = (800,1000))
 enemy_gravity = 0
 enemy_dodge_timer = 0
 
 dash_ability = pygame.image.load('gamegraphics/dashsymbol.png')
-dash_icon = pygame.transform.scale(dash_ability, (200, 200))
-dash_rect = dash_icon.get_rect(topleft = (50,50))
+dash_icon = pygame.transform.scale(dash_ability, (100, 100))
+dash_rect = dash_icon.get_rect(topleft = (1050,50))
 
 
 
@@ -48,10 +56,10 @@ class Player(object):
         self.slowness = slowness
 
     def update(self):
-        screen.blit(player, player_rect)
+        screen.blit(playerscaled, player_rect)
 
     def jump(self):
-        if player_rect.bottom == 600:
+        if player_rect.bottom == 950:
             self.gravity = -27
 
     def dashright(self):
@@ -61,26 +69,131 @@ class Player(object):
         self.right_inertia = dude.agility
 
 
-class Enemy(object):
+class Enemy1(object):
 
-    def __init__(self, slowness):
+    def __init__(self, slowness, init_speed):
         self.slowness = slowness
         self.gravity = 0
+        self.speed = init_speed
+
 
     def update(self):
-        screen.blit(enemy, enemy_rect)
+        screen.blit(enemy1scaled, enemy_rect)
 
     def jump(self):
-        if enemy_rect.bottom == 600:
-            self.gravity = -10
+        self.gravity = -10
 
-dude = Player(40, 60)
-villain = Enemy(120)
+# ATUL'S WORK START
+tile_size = 50
+
+#load images
+sn_img = pygame.image.load('gamegraphics/moon.png')
+sun_img = pygame.transform.scale(sn_img, (50, 50))
+b_img = pygame.image.load('gamegraphics/sky.png')
+bg_img = pygame.transform.scale(b_img, (1000, 1000))
+
+def draw_grid():
+    for line in range(0, 20):
+        pygame.draw.line(screen, (255, 255, 255), (0, line * tile_size), (SCRWIDTH, line * tile_size))
+        pygame.draw.line(screen, (255, 255, 255), (line * tile_size, 0), (line * tile_size, SCRHEIGHT))
+
+class World():
+    def __init__(self, data):
+        self.tile_list = []
+
+        # load image of dirt
+        dit_img = pygame.image.load("gamegraphics/dirt.png")
+        dirt_img = pygame.transform.scale(dit_img, (50, 50))
+
+        # load image of grass
+        gras_img = pygame.image.load("gamegraphics/grass.png")
+        grass_img = pygame.transform.scale(gras_img, (50, 50))
+
+        row_count = 0
+        for row in data:
+            col_count = 0
+            for tile in row:
+                if tile == 1:
+                    img = pygame.transform.scale(dirt_img, (tile_size, tile_size))
+                    img_rect = img.get_rect()
+                    img_rect.x = col_count * tile_size
+                    img_rect.y = row_count * tile_size
+                    tile = (img, img_rect)
+                    self.tile_list.append(tile)
+                if tile == 2:
+                    img = pygame.transform.scale(grass_img, (tile_size, tile_size))
+                    img_rect = img.get_rect()
+                    img_rect.x = col_count * tile_size
+                    img_rect.y = row_count * tile_size
+                    tile = (img, img_rect)
+                    self.tile_list.append(tile)
+                col_count += 1
+            row_count += 1
+
+    def draw(self):
+        for tile in self.tile_list:
+            screen.blit(tile[0], tile[1])
+
+world_data = [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0],
+    [0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 2, 2, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 7, 0, 5, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0],
+    [0, 7, 0, 0, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 7, 0, 0, 0, 0, 0],
+    [0, 0, 2, 0, 0, 7, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 2, 0, 0, 4, 0, 0, 0, 0, 3, 0, 0, 3, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 7, 0, 0, 0, 0, 2, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 0, 2, 2, 2, 2, 2, 1],
+    [0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 1, 2, 1, 2, 1, 1, 1, 1, 1, 1],
+    [1, 0, 0, 0, 0, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 0, 0, 0, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+]
+
+world = World(world_data)
+
+# ATUL'S WORK END
+
+gamestate = "startscreen"
 
 
+while gamestate == "startscreen":
 
-while True:
+    dude = Player(20, 60)
+    villain = Enemy1(120, 5)
 
+
+    screen.blit(bluesky, (0,0))
+    screen.blit(land, (0,600))
+
+    # Integrate Atul's start screen and according buttons.
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:          # If the window is exited, the game quits.
+            pygame.quit()
+            exit()
+
+        x,y = pygame.mouse.get_pos()
+        if event.type == pygame.MOUSEBUTTONDOWN and 0<x<1500 and 0<y<800:
+            gamestate = "play"
+
+    pygame.display.update()
+    clock.tick(60)    
+
+
+while gamestate == "play":
+
+    screen.blit(bg_img, (0, 0))
+    screen.blit(sun_img, (100, 100))
+    world.draw()
+    draw_grid()
 
     for event in pygame.event.get():          # Checks for all possible events.
         if event.type == pygame.QUIT:          # If the window is exited, the game quits.
@@ -104,9 +217,15 @@ while True:
                     pass 
         # if event.type == pygame.KEYUP:
 
+    # Different levels/Speeds
+    if dude.score < 3:
+        enemy_rect.left -= villain.speed
 
-    screen.blit(sky, (0,0))
-    screen.blit(land, (0,600))           # Block Image Transfer.
+    elif dude.score >= 3 and dude.score < 10:
+        enemy_rect.left -= villain.speed + 5
+
+    # pygame.draw.rect(screen, (255,0,0), player_rect) #(UN-COMMENT TO ACCESS HITBOXES)
+    # pygame.draw.rect(screen, (255,0,0), enemy_rect)
 
     # Our lovely player.
     dude.gravity += 1
@@ -129,30 +248,33 @@ while True:
         dashcooldown = 0
 
     # Score by exiting the screen on the right side
-    if player_rect.left > 1500: 
-        player_rect.left = -150
+    if player_rect.left > R_BORDER: 
+        player_rect.left = L_BORDER
         dude.score += 1
-    if player_rect.left < -150:
-        player_rect.left = 1500
-    if player_rect.bottom > 600: player_rect.bottom = 600
+    if player_rect.left < L_BORDER:
+        player_rect.left = R_BORDER
+    if player_rect.bottom > FLOOR: player_rect.bottom = FLOOR
     dude.update()
-
-    if dashcooldown == 0:
-        screen.blit(dash_icon,dash_rect).inflate(0.5,0.5)
 
 
     # Our deplorable enemy.
 
     enemy_gravity += 1
     enemy_rect.y += enemy_gravity
-    enemy_rect.left -= 5
-    if enemy_rect.left < -150: enemy_rect.left = 1500
-    if enemy_rect.bottom > 800: enemy_rect.bottom = 800
+    if enemy_rect.left < L_BORDER: 
+        enemy_rect.left = R_BORDER
+    if enemy_rect.bottom > FLOOR: 
+        enemy_rect.bottom = FLOOR
     enemy_dodge_timer += 1
     if enemy_dodge_timer == 120:
         enemy_gravity = -20
+        villain.jump()
         enemy_dodge_timer = 0
     villain.update()
+
+    screen.blit(toolbar, (1000,0))
+    if dashcooldown == 0:
+        screen.blit(dash_icon,dash_rect)
 
     if enemy_rect.colliderect(player_rect):
         if dude.right_inertia != 0 or dude.left_inertia != 0:
@@ -168,18 +290,14 @@ while True:
 
     '''
     THINGS TO IMPLEMENT:
-    - ENEMY CLASS
-    - ENEMY BULLETS
-    - PLAYER BULLETS
+    - GAME-OVER GAME STATE
 
-    - HEALTH SYSTEM + GAME OVER SCREEN
+    - PRINT SCORE
 
-    - IMPLEMENT BACKGROUND
-    - FRAME SHIFT WITH PLAYER MOVEMENT - MAKE A DECISION
-
-    - SCORE
-
-    - SHIFT TO DIFFERENT GAME STATE AFTER SCORE REACHES A CERTAIN LEVEL, CHANGE SKY COLOR, ETC ETC!
     
-    
+    - HOW TO IMPLEMENT GAMESTATE:
+        - Standardize screen size
+        - Include background code and print accordingly
+        - Shrink sprites
+        - Spawn multiple enemies
     '''
