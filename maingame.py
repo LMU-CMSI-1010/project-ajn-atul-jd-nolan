@@ -21,16 +21,15 @@ bluesky.fill("SKYBLUE")
 toolbar = pygame.Surface((200, SCRHEIGHT))
 toolbar.fill("WHITE")
 
-# redsky = pygame.Surface((s_width, 800))
-# redsky.fill("RED")
+font = pygame.font.SysFont("Consolas", 40, True, False)
 
 land = pygame.Surface((SCRWIDTH, SCRHEIGHT))          # Normal surface.
 land.fill(SAND)
 
 
-player = pygame.image.load('gamegraphics/literalbeans.png')
-playerscaled = pygame.transform.scale(player, (50,75))
-player_rect = playerscaled.get_rect(midbottom = (80,950))
+player = pygame.image.load('gamegraphics/hero.png')
+playerscaled = pygame.transform.scale(player, (100,150))
+# player_rect = playerscaled.get_rect(midbottom = (80,950))
 dashcooldown = 0
 
 enemy = pygame.image.load('gamegraphics/enemy1.png')
@@ -47,20 +46,64 @@ dash_rect = dash_icon.get_rect(topleft = (1050,50))
 
 class Player(object):
 
-    def __init__(self, agility, slowness):
+    def __init__(self, agility, slowness, x, y, image):
         self.agility = agility
         self.gravity = 0
         self.left_inertia = 0
         self.right_inertia = 0
+        self.x = x
+        self.y = y
+        self.image = image
+        self.rect = image.get_rect(midbottom = (self.x,self.y))
         self.score = 0
         self.slowness = slowness
 
     def update(self):
-        screen.blit(playerscaled, player_rect)
+
+        dude.gravity += 1
+        dude.rect.y += dude.gravity             # Natural-ish gravity mechanic.
+
+        # Right Dash.
+        dude.left_inertia -= 1
+        if dude.left_inertia < 0:
+            dude.left_inertia = 0
+        dude.rect.right += dude.left_inertia
+
+        # Left Dash.
+        dude.right_inertia -= 1
+        if dude.right_inertia < 0:
+            dude.right_inertia = 0
+        dude.rect.left -= dude.right_inertia  
+
+        # Score by exiting the screen on the right side.
+        if dude.rect.left > R_BORDER: 
+            dude.rect.left = L_BORDER
+            dude.score += 1
+        if dude.rect.left < L_BORDER:
+            dude.rect.left = R_BORDER
+        if dude.rect.bottom > FLOOR: 
+            dude.rect.bottom = FLOOR
+        screen.blit(self.image, self.rect)
+        
+        # code atul is adding to check for collision
+        for tile in world.tile_list:
+                #check for collision in x direction
+                if tile[1].colliderect(self.rect.x + dx, self.rect.y, self.width, self.height):
+                    dx = 0
+                #check for collision in y direction
+                if tile[1].colliderect(self.rect.x, self.rect.y + dy, self.width, self.height):
+                    #check if below the ground i.e. jumping
+                    if self.vel_y < 0:
+                        dy = tile[1].bottom - self.rect.top
+                        self.vel_y = 0
+                    #check if above the ground i.e. falling
+                    elif self.vel_y >= 0:
+                        dy = tile[1].top - self.rect.bottom
+                        self.vel_y = 0
 
     def jump(self):
-        if player_rect.bottom == 950:
-            self.gravity = -27
+        if self.rect.bottom == 950:
+            self.gravity = -20
 
     def dashright(self):
         self.left_inertia = dude.agility
@@ -71,17 +114,22 @@ class Player(object):
 
 class Enemy1(object):
 
-    def __init__(self, slowness, init_speed):
+    def __init__(self, slowness, init_speed, x, y, image):
         self.slowness = slowness
         self.gravity = 0
         self.speed = init_speed
+        self.x = x
+        self.y = y
+        self.image = image
+        self.rect = image.get_rect(midbottom = (self.x,self.y))
 
 
     def update(self):
-        screen.blit(enemy1scaled, enemy_rect)
+        screen.blit(self.image, enemy_rect)
 
     def jump(self):
         self.gravity = -10
+
 
 # ATUL'S WORK START
 tile_size = 50
@@ -120,6 +168,8 @@ class World():
                     img_rect.y = row_count * tile_size
                     tile = (img, img_rect)
                     self.tile_list.append(tile)
+                    # if img_rect.colliderect(dude.rect):
+                    #     dude.rect.left
                 if tile == 2:
                     img = pygame.transform.scale(grass_img, (tile_size, tile_size))
                     img_rect = img.get_rect()
@@ -166,9 +216,8 @@ gamestate = "startscreen"
 
 while gamestate == "startscreen":
 
-    dude = Player(20, 60)
-    villain = Enemy1(120, 5)
-
+    dude = Player(20, 60, 80, 950, playerscaled)
+    villain = Enemy1(120, 5, 800, 1000, enemy1scaled)
 
     screen.blit(bluesky, (0,0))
     screen.blit(land, (0,600))
@@ -189,6 +238,7 @@ while gamestate == "startscreen":
 
 
 while gamestate == "play":
+
 
     screen.blit(bg_img, (0, 0))
     screen.blit(sun_img, (100, 100))
@@ -224,38 +274,14 @@ while gamestate == "play":
     elif dude.score >= 3 and dude.score < 10:
         enemy_rect.left -= villain.speed + 5
 
-    # pygame.draw.rect(screen, (255,0,0), player_rect) #(UN-COMMENT TO ACCESS HITBOXES)
+    # pygame.draw.rect(screen, (255,0,0), dude.) #(UN-COMMENT TO ACCESS HITBOXES)
     # pygame.draw.rect(screen, (255,0,0), enemy_rect)
-
-    # Our lovely player.
-    dude.gravity += 1
-    player_rect.y += dude.gravity             # Natural-ish gravity mechanic.
-
-    # Right Dash
-    dude.left_inertia -= 1
-    if dude.left_inertia < 0:
-        dude.left_inertia = 0
-    player_rect.right += dude.left_inertia
-
-    # Left Dash
-    dude.right_inertia -= 1
-    if dude.right_inertia < 0:
-        dude.right_inertia = 0
-    player_rect.left -= dude.right_inertia    
     
     dashcooldown -= 1
     if dashcooldown < 0:
         dashcooldown = 0
 
-    # Score by exiting the screen on the right side
-    if player_rect.left > R_BORDER: 
-        player_rect.left = L_BORDER
-        dude.score += 1
-    if player_rect.left < L_BORDER:
-        player_rect.left = R_BORDER
-    if player_rect.bottom > FLOOR: player_rect.bottom = FLOOR
     dude.update()
-
 
     # Our deplorable enemy.
 
@@ -276,16 +302,26 @@ while gamestate == "play":
     if dashcooldown == 0:
         screen.blit(dash_icon,dash_rect)
 
-    if enemy_rect.colliderect(player_rect):
+    # Score
+    scoretext = font.render(f"SCORE:{dude.score}", True, (0,0,0))
+    screen.blit(scoretext, (1000, 800))
+
+    if enemy_rect.colliderect(dude.rect):
         if dude.right_inertia != 0 or dude.left_inertia != 0:
             pass
         else:
             print("GAME OVER! FINAL SCORE:", dude.score)
-            pygame.quit()
-            exit()
+            gamestate = "gameover"
+            # pygame.quit()
+            # exit()
 
     pygame.display.update()
     clock.tick(60)                            # FPS Ceiling - Cannot run faster than 60 FPS.
+
+while gamestate == "gameover":
+    pygame.quit()
+    exit()
+
 
 
     '''
