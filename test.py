@@ -220,6 +220,7 @@ while run:
 
     screen.blit(bg_img, (0, 0))
     screen.blit(sun_img, (100, 100))
+    screen.blit(potato, potato.rect)
     """
     if main_menu == True:
         if exit_button.draw():
