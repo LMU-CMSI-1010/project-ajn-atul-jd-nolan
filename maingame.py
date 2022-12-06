@@ -79,6 +79,7 @@ class Player(object):
             dude.score += 1
         if dude.rect.left < L_BORDER:
             dude.rect.left = R_BORDER
+            dude.score -= 1
         if dude.rect.bottom > FLOOR: 
             dude.rect.bottom = FLOOR
         screen.blit(self.image, self.rect)
