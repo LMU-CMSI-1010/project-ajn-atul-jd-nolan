@@ -82,7 +82,7 @@ class World():
                     tile = (img, img_rect)
                     self.tile_list.append(tile)
                 if tile == 3:
-                    zombie = ZombieGhost(col_count * tile_size, row_count * tile_size + (tile_size // 2))
+                    zombie = Enemy(col_count * tile_size, row_count * tile_size + 15)
                     zombie_group.add(zombie)
 
                 col_count += 1
@@ -97,7 +97,8 @@ class World():
     class Enemy(pygame.sprite.Sprite):
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load('img/blob.png')
+        img = pygame.image.load('gamegraphics/enemy1.png')
+        self.image = pygame.transform.scale(img, (tile_size, tile_size // 2))        
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
@@ -112,16 +113,6 @@ class World():
             self.move_counter *= -1
 
 
-class ZombieGhost(pygame.sprite.Sprite):
-    def __init__(self, x, y):
-        pygame.sprite.Sprite.__init__(self)
-        img = pygame.image.load('gamegraphics/enemy1.png')
-        self.image = pygame.transform.scale(img, (tile_size, tile_size // 2))
-        self.rect = self.image.get_rect()
-        self.rect.x = x
-        self.rect.y = y
-    
-
 world_data = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -133,7 +124,7 @@ world_data = [
     [0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0],
+    [0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0],
@@ -145,7 +136,7 @@ world_data = [
     [1, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ]
 
-lava_group = pygame.sprite.Group()
+zombie_group = pygame.sprite.Group()
 
 world = World(world_data)
 
@@ -169,7 +160,8 @@ while run:
     else:
         world.draw()
     """
-
+     zombie_group.draw(screen)
+        
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
