@@ -21,6 +21,8 @@ bluesky.fill("SKYBLUE")
 toolbar = pygame.Surface((200, SCRHEIGHT))
 toolbar.fill("WHITE")
 
+font = pygame.font.SysFont("Consolas", 40, True, False)
+
 land = pygame.Surface((SCRWIDTH, SCRHEIGHT))          # Normal surface.
 land.fill(SAND)
 
@@ -201,7 +203,6 @@ while gamestate == "startscreen":
     dude = Player(20, 60, 80, 950, playerscaled)
     villain = Enemy1(120, 5, 800, 1000, enemy1scaled)
 
-
     screen.blit(bluesky, (0,0))
     screen.blit(land, (0,600))
 
@@ -221,6 +222,7 @@ while gamestate == "startscreen":
 
 
 while gamestate == "play":
+
 
     screen.blit(bg_img, (0, 0))
     screen.blit(sun_img, (100, 100))
@@ -284,16 +286,26 @@ while gamestate == "play":
     if dashcooldown == 0:
         screen.blit(dash_icon,dash_rect)
 
+    # Score
+    scoretext = font.render(f"SCORE:{dude.score}", True, (0,0,0))
+    screen.blit(scoretext, (1000, 800))
+
     if enemy_rect.colliderect(dude.rect):
         if dude.right_inertia != 0 or dude.left_inertia != 0:
             pass
         else:
             print("GAME OVER! FINAL SCORE:", dude.score)
-            pygame.quit()
-            exit()
+            gamestate = "gameover"
+            # pygame.quit()
+            # exit()
 
     pygame.display.update()
     clock.tick(60)                            # FPS Ceiling - Cannot run faster than 60 FPS.
+
+while gamestate == "gameover":
+    pygame.quit()
+    exit()
+
 
 
     '''
