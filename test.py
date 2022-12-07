@@ -29,7 +29,7 @@ class Potato():
         self.index = 0
         self.counter = 0
         for num in range(1, 5):
-            img_right = pygame.image.load('gamegraphics/hero.png')
+            img_right = pygame.image.load(f'img/guy{num}.png')
             img_right = pygame.transform.scale(img_right, (40, 80))
             img_left = pygame.transform.flip(img_right, True, False)
             self.images_right.append(img_right)
@@ -40,18 +40,19 @@ class Potato():
         self.rect.y = y
         self.width = self.image.get_width()
         self.height = self.image.get_height()
-        self.vely = 0
+        self.vel_y = 0
         self.jumped = False
         self.direction = 0
 
     def update(self):
         dx = 0
         dy = 0
+        walk_cooldown = 5
 
         #get keypresses
         key = pygame.key.get_pressed()
         if key[pygame.K_SPACE] and self.jumped == False:
-            self.vely = -15
+            self.vel_y = -15
             self.jumped = True
         if key[pygame.K_SPACE] == False:
             self.jumped = False
@@ -73,21 +74,15 @@ class Potato():
 
 
         #handle animation
-        self.counter = 0
-        self.index += 1
-        if self.index >= len(self.images_right):
-            self.index = 0
-        if self.direction == 1:
-            self.image = self.images_right[self.index]
-        if self.direction == -1:
-            self.image = self.images_left[self.index]
-
-
-        #add gravity
-        self.vely += 1
-        if self.vely > 10:
-            self.vely = 10
-        dy += self.vely
+        if self.counter > walk_cooldown:
+            self.counter = 0    
+            self.index += 1
+            if self.index >= len(self.images_right):
+                self.index = 0
+            if self.direction == 1:
+                self.image = self.images_right[self.index]
+            if self.direction == -1:
+                self.image = self.images_left[self.index]
 
         #check for collision
         for tile in world.tile_list:
@@ -97,13 +92,13 @@ class Potato():
             #check for collision in y direction
             if tile[1].colliderect(self.rect.x, self.rect.y + dy, self.width, self.height):
                 #check if below the ground i.e. jumping
-                if self.vely < 0:
+                if self.vel_y < 0:
                     dy = tile[1].bottom - self.rect.top
-                    self.vely = 0
+                    self.vel_y = 0
                 #check if above the ground i.e. falling
-                elif self.vely >= 0:
+                elif self.vel_y >= 0:
                     dy = tile[1].top - self.rect.bottom
-                    self.vely = 0
+                    self.vel_y = 0
 
 
 
@@ -220,7 +215,6 @@ while run:
 
     screen.blit(bg_img, (0, 0))
     screen.blit(sun_img, (100, 100))
-    screen.blit(img_right, potato.rect)
     """
     if main_menu == True:
         if exit_button.draw():
@@ -230,7 +224,8 @@ while run:
     else:
     """
     world.draw()
-      
+    potato.update()
+  
         
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
