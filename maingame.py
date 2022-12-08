@@ -21,7 +21,8 @@ bluesky.fill("SKYBLUE")
 toolbar = pygame.Surface((200, SCRHEIGHT))
 toolbar.fill("WHITE")
 
-font = pygame.font.SysFont("Consolas", 40, True, False)
+font = pygame.font.SysFont("Consolas", 40, False, False)
+titlefont = pygame.font.SysFont("Consolas", 60, False, False)
 
 land = pygame.Surface((SCRWIDTH, SCRHEIGHT))          # Normal surface.
 land.fill(SAND)
@@ -212,8 +213,19 @@ while gamestate == "startscreen":
     dude = Player(20, 60, 80, 650, playerscaled)
     villain = Enemy1(120, 5, 800, 650, enemy1scaled)
 
-    screen.blit(bluesky, (0,0))
+    screen.blit(bluesky, (-200,0))
     screen.blit(land, (0,600))
+    world.draw()
+    screen.blit(toolbar, (1000,0))
+
+    welcometext = font.render("WELCOME TO:", True, (255,255,255))
+    screen.blit(welcometext, (100,150))
+
+    titletext = titlefont.render("BEAN THING!", True, (255,255,255))
+    screen.blit(titletext, (100,185))
+
+    parenthesestext = font.render("(working title)", True, (255,255,255))
+    screen.blit(parenthesestext, (100,250))
 
     # Integrate Atul's start screen and according buttons.
 
@@ -232,11 +244,10 @@ while gamestate == "startscreen":
 
 while gamestate == "play":
 
-
     screen.blit(bg_img, (0, 0))
     screen.blit(sun_img, (100, 100))
     world.draw()
-    draw_grid()
+    # draw_grid()
 
     for event in pygame.event.get():          # Checks for all possible events.
         if event.type == pygame.QUIT:          # If the window is exited, the game quits.
@@ -292,6 +303,7 @@ while gamestate == "play":
     villain.update()
 
     screen.blit(toolbar, (1000,0))
+
     if dashcooldown == 0:
         screen.blit(dash_icon,dash_rect)
 
@@ -300,9 +312,9 @@ while gamestate == "play":
     screen.blit(scoretext, (1000, 600))
 
     if enemy_rect.colliderect(dude.rect):
-        if dude.right_inertia != 0 or dude.left_inertia != 0:
-            pass
-        else:
+        # if dude.right_inertia != 0 or dude.left_inertia != 0:  # Collision 
+        #     pass
+        # else:
             print("GAME OVER! FINAL SCORE:", dude.score)
             gamestate = "gameover"
             # pygame.quit()
