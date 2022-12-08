@@ -334,7 +334,6 @@ while gamestate == "gameover":
     - GAME-OVER GAME STATE
 
     - PRINT SCORE
-
     
     - HOW TO IMPLEMENT GAMESTATE:
         - Standardize screen size
