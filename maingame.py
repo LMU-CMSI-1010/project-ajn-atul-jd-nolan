@@ -126,7 +126,7 @@ class Player(object):
         self.rect.y += dy
 
     def jump(self):
-        if self.rect.bottom == 650:
+        # if self.rect.bottom == 650:
             self.gravity = -20
 
     def dashright(self):
@@ -275,7 +275,7 @@ while gamestate == "startscreen":
     pygame.display.update()
     clock.tick(60)    
 
-dude = Player(20, 60, 80, 650, playerscaled)
+dude = Player(20, 80, 80, 650, playerscaled)
 villain = Enemy1(120, 5, 800, 650, enemy1scaled)
 
 while gamestate == "play":
@@ -332,9 +332,9 @@ while gamestate == "play":
         screen.blit(dash_icon,dash_rect)
 
     if villain.rect.colliderect(dude.rect):
-        if dude.right_inertia != 0 or dude.left_inertia != 0:  # Collision 
-            pass
-        else:
+        # if dude.right_inertia != 0 or dude.left_inertia != 0:  # Collision 
+        #     pass
+        # else:
             gamestate = "gameover"
 
     pygame.display.update()
@@ -361,7 +361,7 @@ while gamestate == "gameover":
     quittext = titlefont.render("QUIT?", True, (255,255,255))
     screen.blit(quittext, (650,600))
 
-    screen.blit(enemy, (625,0))
+    screen.blit(enemy, (625,50))
 
     for event in pygame.event.get(): 
         if event.type == pygame.QUIT:          # If the window is exited, the game quits.
