@@ -72,6 +72,8 @@ class Player(object):
         self.rect = image.get_rect(midbottom = (self.x,self.y))
         self.score = 0
         self.slowness = slowness
+        self.width = self.image.get_width()
+        self.height = self.image.get_height()
 
     def update(self):
 
@@ -101,21 +103,27 @@ class Player(object):
             dude.rect.bottom = FLOOR
         screen.blit(self.image, self.rect)
         
+        dx = 0
+        dy = 0
+
         # # code atul is adding to check for collision
-        # for tile in world.tile_list:
-        #         #check for collision in x direction
-        #         if tile[1].colliderect(self.rect.x + dx, self.rect.y, self.width, self.height):
-        #             dx = 0
-        #         #check for collision in y direction
-        #         if tile[1].colliderect(self.rect.x, self.rect.y + dy, self.width, self.height):
-        #             #check if below the ground i.e. jumping
-        #             if self.vel_y < 0:
-        #                 dy = tile[1].bottom - self.rect.top
-        #                 self.vel_y = 0
-        #             #check if above the ground i.e. falling
-        #             elif self.vel_y >= 0:
-        #                 dy = tile[1].top - self.rect.bottom
-        #                 self.vel_y = 0
+        for tile in world.tile_list:
+            #check for collision in x direction
+            if tile[1].colliderect(self.rect.x + dx, self.rect.y, self.width, self.height):
+                dx = 0
+            #check for collision in y direction
+            if tile[1].colliderect(self.rect.x, self.rect.y + dy, self.width, self.height):
+                #check if below the ground i.e. jumping
+                if self.gravity < 0:
+                    dy = tile[1].bottom - self.rect.top
+                    self.gravity = 0
+                #check if above the ground i.e. falling
+                elif self.gravity >= 0:
+                    dy = tile[1].top - self.rect.bottom
+                    self.gravity = 0
+
+        self.rect.x += dx
+        self.rect.y += dy
 
     def jump(self):
         if self.rect.bottom == 650:
@@ -223,8 +231,8 @@ world_data = [
     [0, 7, 0, 0, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 7, 0, 0, 0, 0, 0],
-    [0, 0, 2, 0, 0, 7, 0, 7, 0, 0, 0, 3, 0, 0, 3, 0, 0, 0, 0, 0],
-    [0, 0, 0, 2, 0, 0, 4, 0, 0, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 7, 0, 7, 0, 0, 0, 3, 0, 0, 3, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 4, 0, 0, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
@@ -377,6 +385,6 @@ while gamestate == "gameover":
     '''
     THE GLOSSARY.
 
-    
+
 
     '''
