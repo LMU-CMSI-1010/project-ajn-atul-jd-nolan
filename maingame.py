@@ -1,3 +1,16 @@
+'''
+UNTITLED BEAN GAME, or "FRIJOLE FIASCO!"
+
+This file serves as the main hub for the project. The full game can be accessed using only this code, 
+with of course, our gamegraphics folder for the assets and images.
+
+FUNCTION/CLASS GLOSSARY CAN BE FOUND AT THE BOTTOM.
+'''
+
+
+'''
+THE FOUNDATION.
+'''
 import pygame
 from sys import exit
 
@@ -43,7 +56,9 @@ dash_ability = pygame.image.load('gamegraphics/dashsymbol.png')
 dash_icon = pygame.transform.scale(dash_ability, (100, 100))
 dash_rect = dash_icon.get_rect(topleft = (1050,50))
 
-
+'''
+THE CLASSES.
+'''
 class Player(object):
 
     def __init__(self, agility, slowness, x, y, image):
@@ -142,7 +157,9 @@ class Enemy1(object):
     def jump(self):
         self.gravity = -20
 
-
+'''
+THE WORLD, by ATUL.
+'''
 # ATUL'S WORK START
 tile_size = 50
 
@@ -217,8 +234,10 @@ world = World(world_data)
 
 # ATUL'S WORK END
 
+'''
+THE GAME(STATES), by NOLAN.
+'''
 gamestate = "startscreen"
-
 
 while gamestate == "startscreen":
 
@@ -356,6 +375,8 @@ while gamestate == "gameover":
 
 
     '''
-    THINGS TO IMPLEMENT:
+    THE GLOSSARY.
+
+    
 
     '''
