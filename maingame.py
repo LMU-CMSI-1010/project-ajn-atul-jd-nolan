@@ -13,11 +13,12 @@ clock = pygame.time.Clock()
 
 # Colors
 SAND = (156, 117, 82)
+PASTELGREEN = (61, 204, 85)
+PASTELRED = (222, 69, 58)
 
 # Objects
 bluesky = pygame.Surface((SCRWIDTH, SCRHEIGHT)) 
 bluesky.fill("SKYBLUE") 
-
 toolbar = pygame.Surface((200, SCRHEIGHT))
 toolbar.fill("WHITE")
 
@@ -28,7 +29,7 @@ land = pygame.Surface((SCRWIDTH, SCRHEIGHT))          # Normal surface.
 land.fill(SAND)
 
 player = pygame.image.load('gamegraphics/hero.png')
-playerscaled = pygame.transform.scale(player, (100,150))
+playerscaled = pygame.transform.scale(player, (75,100))
 # player_rect = playerscaled.get_rect(midbottom = (80,950))
 dashcooldown = 0
 
@@ -122,13 +123,24 @@ class Enemy1(object):
         self.y = y
         self.image = image
         self.rect = image.get_rect(midbottom = (self.x,self.y))
-
+        self.dodge_timer = 0
 
     def update(self):
-        screen.blit(self.image, enemy_rect)
+        self.gravity += 1
+        self.rect.y += self.gravity
+        if self.rect.left < L_BORDER: 
+            self.rect.left = R_BORDER
+        if self.rect.bottom > FLOOR: 
+            self.rect.bottom = FLOOR
+            self.dodge_timer += 1
+        if self.dodge_timer == 120:
+            # self.gravity = -20
+            self.jump()
+            self.dodge_timer = 0
+        screen.blit(self.image, self.rect)
 
     def jump(self):
-        self.gravity = -10
+        self.gravity = -20
 
 
 # ATUL'S WORK START
@@ -210,9 +222,6 @@ gamestate = "startscreen"
 
 while gamestate == "startscreen":
 
-    dude = Player(20, 60, 80, 650, playerscaled)
-    villain = Enemy1(120, 5, 800, 650, enemy1scaled)
-
     screen.blit(bluesky, (-200,0))
     screen.blit(land, (0,600))
     world.draw()
@@ -227,20 +236,20 @@ while gamestate == "startscreen":
     parenthesestext = font.render("(working title)", True, (255,255,255))
     screen.blit(parenthesestext, (100,250))
 
-    # Integrate Atul's start screen and according buttons.
-
     for event in pygame.event.get():
         if event.type == pygame.QUIT:          # If the window is exited, the game quits.
             pygame.quit()
             exit()
 
         x,y = pygame.mouse.get_pos()
-        if event.type == pygame.MOUSEBUTTONDOWN and 0<x<1500 and 0<y<800:
+        if event.type == pygame.MOUSEBUTTONDOWN and 0<x<1000 and 0<y<800:
             gamestate = "play"
 
     pygame.display.update()
     clock.tick(60)    
 
+dude = Player(20, 60, 80, 650, playerscaled)
+villain = Enemy1(120, 5, 800, 650, enemy1scaled)
 
 while gamestate == "play":
 
@@ -273,71 +282,80 @@ while gamestate == "play":
 
     # Different levels/Speeds
     if dude.score < 3:
-        enemy_rect.left -= villain.speed
+        villain.rect.left -= villain.speed
 
     elif dude.score >= 3 and dude.score < 10:
-        enemy_rect.left -= villain.speed + 5
+        villain.rect.left -= villain.speed + 5
 
-    # pygame.draw.rect(screen, (255,0,0), dude.) #(UN-COMMENT TO ACCESS HITBOXES)
+    # pygame.draw.rect(screen, (255,0,0), dude.rect) #(UN-COMMENT TO ACCESS HITBOXES)
     # pygame.draw.rect(screen, (255,0,0), enemy_rect)
-    
-    dashcooldown -= 1
-    if dashcooldown < 0:
-        dashcooldown = 0
-
     dude.update()
-
-    # Our deplorable enemy.
-
-    enemy_gravity += 1
-    enemy_rect.y += enemy_gravity
-    if enemy_rect.left < L_BORDER: 
-        enemy_rect.left = R_BORDER
-    if enemy_rect.bottom > FLOOR: 
-        enemy_rect.bottom = FLOOR
-    enemy_dodge_timer += 1
-    if enemy_dodge_timer == 120:
-        enemy_gravity = -20
-        villain.jump()
-        enemy_dodge_timer = 0
     villain.update()
 
     screen.blit(toolbar, (1000,0))
 
+    # Score
+    scoretext = font.render(f"SCORE:{dude.score}", True, (0,0,0))
+    screen.blit(scoretext, (1015, 600))
+
+    dashcooldown -= 1
+    if dashcooldown < 0:
+        dashcooldown = 0
     if dashcooldown == 0:
         screen.blit(dash_icon,dash_rect)
 
-    # Score
-    scoretext = font.render(f"SCORE:{dude.score}", True, (0,0,0))
-    screen.blit(scoretext, (1000, 600))
-
-    if enemy_rect.colliderect(dude.rect):
-        # if dude.right_inertia != 0 or dude.left_inertia != 0:  # Collision 
-        #     pass
-        # else:
-            print("GAME OVER! FINAL SCORE:", dude.score)
+    if villain.rect.colliderect(dude.rect):
+        if dude.right_inertia != 0 or dude.left_inertia != 0:  # Collision 
+            pass
+        else:
             gamestate = "gameover"
-            # pygame.quit()
-            # exit()
 
     pygame.display.update()
     clock.tick(60)                            # FPS Ceiling - Cannot run faster than 60 FPS.
 
-while gamestate == "gameover":
-    pygame.quit()
-    exit()
 
+
+while gamestate == "gameover":
+
+    restartbutton = pygame.Surface((500, SCRHEIGHT)) 
+    restartbutton.fill(PASTELGREEN) 
+    screen.blit(restartbutton, (0,0))
+
+    exitbutton = pygame.Surface((500, SCRHEIGHT))
+    exitbutton.fill(PASTELRED)
+    screen.blit(exitbutton, (500,0))
+
+    finalscoretext = font.render(f"FINAL SCORE:{dude.score}", True, (0,0,0))
+    screen.blit(finalscoretext, (90,200))
+
+    restarttext = titlefont.render("RESTART?", True, (255,255,255))
+    screen.blit(restarttext, (100,600))
+
+    quittext = titlefont.render("QUIT?", True, (255,255,255))
+    screen.blit(quittext, (650,600))
+
+    screen.blit(enemy, (625,0))
+
+    for event in pygame.event.get(): 
+        if event.type == pygame.QUIT:          # If the window is exited, the game quits.
+            pygame.quit()
+            exit()
+
+        x,y = pygame.mouse.get_pos()
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if 0<x<500 and 0<y<800:
+                dude.score = 0
+                gamestate = "play"
+
+            if 500<x<1000 and 0<y<800:
+                pygame.quit()
+                exit()
+
+    pygame.display.update()
+    clock.tick(60) 
 
 
     '''
     THINGS TO IMPLEMENT:
-    - GAME-OVER GAME STATE
 
-    - PRINT SCORE
-    
-    - HOW TO IMPLEMENT GAMESTATE:
-        - Standardize screen size
-        - Include background code and print accordingly
-        - Shrink sprites
-        - Spawn multiple enemies
     '''
