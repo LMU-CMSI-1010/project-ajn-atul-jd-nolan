@@ -58,6 +58,14 @@ dash_rect = dash_icon.get_rect(topleft = (1050,50))
 
 '''
 THE CLASSES.
+
+PLAYER CLASS: A character to be controlled by the player. Has abilities such as dash and jump. No attacking
+capabilities, just dodging. 
+
+ENEMY CLASS: A non-controllable enemy, set to move across the screen and jump at seemingly random intervals.
+
+WORLD CLASS: A programmable object that sets the background and terrain however the programmer would like it, 
+using an array of lists contained within each instance.
 '''
 class Player(object):
 
@@ -311,7 +319,7 @@ while gamestate == "play":
     if dude.score < 3:
         villain.rect.left -= villain.speed
 
-    elif dude.score >= 3 and dude.score < 10:
+    elif dude.score >= 3:
         villain.rect.left -= villain.speed + 5
 
     # pygame.draw.rect(screen, (255,0,0), dude.rect) #(UN-COMMENT TO ACCESS HITBOXES)
