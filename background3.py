@@ -4,6 +4,8 @@ Cleaned up the second background iteration by getting rid of the code that didn'
 the Button and Enemy classes.
 The background uses sprites to draw a moon, sky, and the types of blocks.
 An array of arrays is used to create the template for the background.
+World Class: It basically adds the blocks and enemies to their corresponding number 
+in the array of arrays
 """
 import pygame
 from pygame.locals import *
