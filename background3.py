@@ -41,6 +41,7 @@ class World():
         gras_img = pygame.image.load("gamegraphics/grass.png")
         grass_img = pygame.transform.scale(gras_img, (50, 50))
 
+        # The code to add items based on the number in the world array
         row_count = 0
         for row in data:
             col_count = 0
@@ -89,7 +90,7 @@ world_data = [
     [1, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ]
 
-
+# runs the world class
 world = World(world_data)
 
 run = True
