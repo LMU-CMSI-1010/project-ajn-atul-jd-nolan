@@ -1,3 +1,13 @@
+"""
+A 'just in case' file to test the combination of the background along with characters.
+This was created with a simple and loosely created Potato class which was to be the 
+playable character (it didn't exactly work fully, but sort of did basic functions like 
+move and jump.
+It was created in case we couldn't get the maingame code to work in time for the presentation.
+It was also used as an experiment ground to test code before we added it into the maingame:
+for example the collision mechanics.
+Surprising absolutely no one, the Button class didn't work even though we already had all the rectangles in place.
+"""
 import pygame
 from pygame.locals import *
 
