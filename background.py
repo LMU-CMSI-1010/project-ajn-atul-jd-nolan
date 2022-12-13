@@ -8,7 +8,7 @@ An array of arrays is used to create the template for the background.
 Button Class: supposed to be used to create clickable buttons for start/exit/restart
 Basically surrounds an image with a rectangle and checks to see if the mouse is over the 
 image and if it clicks it.
-World Class: It basically adds the blocks and enemies to their corresponding number 
+World Class: It basically adds the blocks to their corresponding number 
 in the array of arrays
 """
 # from tkinter import Button
