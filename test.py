@@ -7,6 +7,13 @@ It was created in case we couldn't get the maingame code to work in time for the
 It was also used as an experiment ground to test code before we added it into the maingame:
 for example the collision mechanics.
 Surprising absolutely no one, the Button class didn't work even though we already had all the rectangles in place.
+Button Class: supposed to be used to create clickable buttons for start/exit/restart
+Basically surrounds an image with a rectangle and checks to see if the mouse is over the 
+image and if it clicks it.
+World Class: It basically adds the blocks and enemies to their corresponding number 
+in the array of arrays
+Potato Class: the playable class with an image and collision. Image flips based on movement and the movement
+is based on keypresses.
 """
 import pygame
 from pygame.locals import *
