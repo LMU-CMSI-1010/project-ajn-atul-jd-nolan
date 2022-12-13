@@ -70,7 +70,8 @@ class World():
         # load images
         dirt_img = pygame.image.load('gamegraphics/dirt.png')
         grass_img = pygame.image.load('gamegraphics/grass.png')
-
+        
+        # The code to add items based on the number in the world array
         row_count = 0
         for row in data:
             col_count = 0
@@ -101,7 +102,7 @@ class World():
             screen.blit(tile[0], tile[1])
             pygame.draw.rect(screen, (255, 255, 255), tile[1], 2)
 
-            
+# enemy class with rectangles in order to incorporate collisions          
 class Enemy(pygame.sprite.Sprite):
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
@@ -120,7 +121,7 @@ class Enemy(pygame.sprite.Sprite):
             self.move_direction *= -1
             self.move_counter *= -1
 
-
+# The world array
 world_data = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
