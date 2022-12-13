@@ -1,3 +1,11 @@
+"""
+The second iteration/test of the background for our game. 
+Also used as a test to see if the Button class would work.
+Since the class didn't work, the Button class was commented out.
+There is also an enemy class that didn't quite work out.
+The background uses sprites to draw a moon, sky, and the types of blocks.
+An array of arrays is used to create the template for the background.
+"""
 import pygame
 from pygame.locals import *
 
