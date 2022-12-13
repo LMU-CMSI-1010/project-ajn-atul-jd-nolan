@@ -1,3 +1,11 @@
+"""
+The first iteration/test of the background for our game. 
+Also used as a test to see if the Button class would work.
+Dealing with the button class and all it's errors was a hassle, so I created
+a new background file (background2) to get the feeling of a 'fresh start'.
+The background uses sprites to draw a moon, sky, and the types of blocks.
+An array of arrays is used to create the template for the background.
+"""
 # from tkinter import Button
 
 import pygame
