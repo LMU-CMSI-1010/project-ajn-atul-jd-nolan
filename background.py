@@ -61,8 +61,9 @@ def draw_grid():
     for line in range(0, 20):
         pygame.draw.line(screen, (255, 255, 255), (0, line * tile_size), (screen_width, line * tile_size))
         pygame.draw.line(screen, (255, 255, 255), (line * tile_size, 0), (line * tile_size, screen_height))
+ 
 
-
+# The main class for the background
 class World:
     def __init__(self, data):
 
@@ -100,7 +101,7 @@ class World:
         for tile in self.tile_list:
             screen.blit(tile[0], tile[1])
 
-# the world
+# the world array
 world_data = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
