@@ -1,3 +1,16 @@
+"""
+The first iteration/test of the background for our game. 
+Also used as a test to see if the Button class would work.
+Dealing with the button class and all it's errors was a hassle, so I created
+a new background file (background2) to get the feeling of a 'fresh start'.
+The background uses sprites to draw a moon, sky, and the types of blocks.
+An array of arrays is used to create the template for the background.
+Button Class: supposed to be used to create clickable buttons for start/exit/restart
+Basically surrounds an image with a rectangle and checks to see if the mouse is over the 
+image and if it clicks it.
+World Class: It basically adds the blocks to their corresponding number 
+in the array of arrays
+"""
 # from tkinter import Button
 
 import pygame
@@ -53,8 +66,9 @@ def draw_grid():
     for line in range(0, 20):
         pygame.draw.line(screen, (255, 255, 255), (0, line * tile_size), (screen_width, line * tile_size))
         pygame.draw.line(screen, (255, 255, 255), (line * tile_size, 0), (line * tile_size, screen_height))
+ 
 
-
+# The main class for the background
 class World:
     def __init__(self, data):
 
@@ -92,7 +106,7 @@ class World:
         for tile in self.tile_list:
             screen.blit(tile[0], tile[1])
 
-# the world
+# the world array
 world_data = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
